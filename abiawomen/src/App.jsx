@@ -10,6 +10,8 @@ import {BrowserRouter} from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import ServicesPage from './Component/ServicesPage/ServicesPage';
 import Contact from './Component/Contact/Contact';
+import UpcomingEvent from './Component/UpcomingEvent/UpcomingEvent';
+import EventsGallery from './Component/EventsGallery/EventsGallery';
 function App() {
   return (
     <BrowserRouter>
@@ -29,6 +31,8 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/Services" element={<ServicesPage />} />
           <Route path="/Contact" element={<Contact/>}/>
+          <Route path="/UpcomingEvent" element={<UpcomingEvent/>} />
+          <Route path="/EventsGallery" element={<EventsGallery/>} />
           
         </Routes>
       </main>

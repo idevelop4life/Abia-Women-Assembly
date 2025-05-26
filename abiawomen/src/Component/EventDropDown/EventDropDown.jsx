@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function EventDropDown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,8 @@ export default function EventDropDown() {
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
-        Services
+        <Link to="/UpcomingEvent">Events</Link>
+        
       </button>
 
       {isOpen && (
@@ -32,7 +34,8 @@ export default function EventDropDown() {
             Upcoming Events
           </a>
           <a href="/EventsGallery" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Events Gallery
+          <Link to="/EventsGallery">Events Gallery</Link>
+            
           </a>
           
         </div>
