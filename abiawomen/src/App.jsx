@@ -12,6 +12,8 @@ import ServicesPage from './Component/ServicesPage/ServicesPage';
 import Contact from './Component/Contact/Contact';
 import UpcomingEvent from './Component/UpcomingEvent/UpcomingEvent';
 import EventsGallery from './Component/EventsGallery/EventsGallery';
+import SignIn from './Component/SignIn/SignIn';
+import Login from './Component/LogIn/Login';
 function App() {
   return (
     <BrowserRouter>
@@ -33,6 +35,8 @@ function App() {
           <Route path="/Contact" element={<Contact/>}/>
           <Route path="/UpcomingEvent" element={<UpcomingEvent/>} />
           <Route path="/EventsGallery" element={<EventsGallery/>} />
+          <Route path='/Sign In' element={<SignIn/>} />
+          <Route path='/LogIn' element={<Login/>}/>
           
         </Routes>
       </main>

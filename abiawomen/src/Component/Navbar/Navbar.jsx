@@ -23,7 +23,7 @@ function SignedInFeature({ isSignedIn }) {
 
 
 export default function Navbar() {
-    const [isSignedIn, setIsSignedIn] = React.useState(true); 
+    const [isSignedIn, setIsSignedIn] = React.useState(false); 
 
     return (
         <div>
@@ -49,9 +49,10 @@ export default function Navbar() {
                     {!isSignedIn && (
                         <button 
                             className="bg-[#FBD33D] text-black px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-                            onClick={() => setIsSignedIn(true)}
+                            onClick={() => setIsSignedIn(false)} path="/Sign In"
                         >
-                            Sign In
+                            <Link to="/Sign In">Sign In</Link>
+                            
                         </button>
                     )}
                     <SignedInFeature isSignedIn={isSignedIn} />
