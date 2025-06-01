@@ -23,7 +23,7 @@ function SignedInFeature({ isSignedIn }) {
 
 
 export default function Navbar() {
-    const [isSignedIn, setIsSignedIn] = React.useState(false); 
+    const [isSignedIn, setIsSignedIn] = React.useState(true); 
 
     return (
         <div>

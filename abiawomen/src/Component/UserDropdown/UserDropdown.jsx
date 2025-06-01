@@ -30,19 +30,19 @@ function UserDropdown() {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ">
-          <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
+          <a href="MyDonations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
             My Donations
           </a>
-          <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
+          <a href="MyDashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
             My Dashboard
           </a>
-          <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
+          <a href="UpdateProfile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
             Update Profile
           </a>
-          <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <a href="BenefitPrograms" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
             Benefit Programs
           </a>
-          <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <a href="EmpowermentPrograms" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
             Empowerment Programs
           </a>
           <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
