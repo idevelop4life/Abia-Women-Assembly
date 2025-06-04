@@ -5,8 +5,8 @@ export default function MyDashboard() {
     <div className='mx-10 my-10'>
         <h1 className='font-bold text-2xl my-10'>Welcome, Grace!<a></a></h1>
         <div className='flex flex-row gap-10 justify-center'> 
-            <img  className="rounded-full border-4"src="https://picsum.photos/400/300" alt="Random placeholder image" />
-            <div> 
+            <img  className="rounded-full border-4 w-40 h-40 items-center justify-center"src="https://picsum.photos/400/300" alt="Random placeholder image" />
+            <div className='flex flex-row'>
                 <div className='my-10 border p-3'> 
                     <p>Membership Details</p>
                     <p>Grace Iheme</p>
@@ -16,7 +16,10 @@ export default function MyDashboard() {
                     <p>ID Number</p>
                     <p>AWA-MN0178</p>
                 </div>
-
+                <div>
+                    <img/>
+                    <p>Holder</p>
+                </div>
             </div>
         </div>
         <div className='flex flex-row justify-between my-5'>

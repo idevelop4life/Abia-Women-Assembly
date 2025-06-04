@@ -1,39 +1,45 @@
 import React from 'react'
 
-export default function EmpowermentPrograms() {
+export default function BenefitPrograms() {
   return (
     <div>
         <div>
-            <h1>Empowerment Programs</h1>
-        </div>
-        <div>
-            <img/>
             <div>
+                <div>
+                    <p>Leadership</p>
+                   <img/>
+                </div>
                 <h2>Mentorship Initiative</h2>
                 <p>Connects women with experienced women leaders for guidance</p>
-            </div>
-            <div>
-                <button>Apply</button>
-            </div>
-        </div>
-        <div>
-            <img/>
-            <div>
-                <h2>Mentorship Initiative</h2>
-                <p>Connects women with experienced women leaders for guidance</p>
-            </div>
-            <div>
-                <button>Apply</button>
+                <div>
+                    <p>Eligible</p>
+                </div>
             </div>
         </div>
         <div>
-            <img/>
             <div>
+                <div>
+                    <p>Leadership</p>
+                   <img/>
+                </div>
                 <h2>Mentorship Initiative</h2>
                 <p>Connects women with experienced women leaders for guidance</p>
+                <div>
+                    <p>Eligible</p>
+                </div>
             </div>
+        </div>
+        <div>
             <div>
-                <button>Apply</button>
+                <div>
+                    <p>Leadership</p>
+                   <img/>
+                </div>
+                <h2>Mentorship Initiative</h2>
+                <p>Connects women with experienced women leaders for guidance</p>
+                <div>
+                    <p>Eligible</p>
+                </div>
             </div>
         </div>
     </div>
