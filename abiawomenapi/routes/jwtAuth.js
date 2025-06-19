@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator.js');
 const validInfo = require('../middleware/validinfo.js');
 const authorization = require('../middleware/authorization.js');
-// 42:40
 
 router.post("/register", validInfo, async (req, res) => {
     try {
@@ -64,3 +63,13 @@ router.post("/login", validInfo, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+router.get("/verify", authorization, (req, res) => {
+  try {
+    res.json(true);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+module.exports = router;
