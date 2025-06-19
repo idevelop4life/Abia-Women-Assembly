@@ -9,7 +9,9 @@ export default function EmpowermentPrograms() {
         <div className='px-3'>
             <h1 className='text-5xl font-bold text-green-900 mb-4'>Empowerment <br/>Programs</h1>
         </div>
-        <div className='border-t border-b border-gray-200 py-6 px-3 flex flex-row justify-between'>
+        <div className='m-3'>
+
+            <div className='border-t border-b border-gray-200 py-6 px-3 flex flex-row justify-between'>
             <div className='flex flex-row'>
                 <img src={e1} alt="Heart Handshake" width="50"/>
                 <div>
@@ -51,6 +53,9 @@ export default function EmpowermentPrograms() {
                 </button>            
             </div>
         </div>
+
+        </div>
+        
     </div>
   )
 }

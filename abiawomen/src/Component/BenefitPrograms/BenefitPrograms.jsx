@@ -38,7 +38,7 @@ export default function BenefitPrograms() {
             <div className='py-3 px-3'>
                 <div className='flex flex-row justify-between'>
                     <p className='font-bold'>
-                    <span className='bg-yellow'>Health</span>
+                    <span className='bg-green'>Health</span>
                     </p>
                     <button 
                     onClick={() => setBookmarked(!bookmarked)}
