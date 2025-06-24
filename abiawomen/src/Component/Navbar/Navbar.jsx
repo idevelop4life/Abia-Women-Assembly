@@ -51,7 +51,7 @@ export default function Navbar() {
                             className="bg-[#FBD33D] text-black px-4 py-2 rounded hover:bg-blue-600 transition-colors"
                             onClick={() => setIsSignedIn(false)} path="/Sign In"
                         >
-                            <Link to="/Sign In">Sign In</Link>
+                            <Link to="/Register">Sign In</Link>
                             
                         </button>
                     )}
