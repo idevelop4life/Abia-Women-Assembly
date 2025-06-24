@@ -8,6 +8,6 @@ const db = require('./db.config');
   } catch (err) {
     console.error('❌ Connection failed:', err.message);
   } finally {
-    await db.end(); // Close the connection pool
+    await db.end(); 
   }
 })();

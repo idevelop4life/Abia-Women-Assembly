@@ -7,7 +7,8 @@ function jwtGenerator(user) {
     user: { 
       id: user.id,
       user_email: user.user_email, // Must match DB column names
-      user_name: user.user_name
+      user_name: user.user_name, 
+      member_type: user.member_type // Ensure this is included if needed
     }
   };
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '10h' });
