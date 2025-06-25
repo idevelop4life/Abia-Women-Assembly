@@ -2,10 +2,17 @@ const router = require('express').Router();
 const pool = require('../db.js')
 const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator.js');
-const validInfo = require('../middleware/validinfo.js');
-const authorization = require('../middleware/authorization.js');// Validation middleware
+const { v4: uuidv4 } = require('uuid'); // Add this missing import
+// const validInfo = require('../middleware/validinfo.js');
+// const authorization = require('../middleware/authorization.js');// Validation middleware
 
-router.post("/register", validInfo, async (req, res) => {
+// Registration endpoint
+router.get("/", (req, res) => {
+    res.send("Hello World from Auth Route!")
+})
+
+router.post('/register', async (req, res) => {
+  console.log("Registration endpoint hit");
   try {
     const {
       last_name,
@@ -25,123 +32,76 @@ router.post("/register", validInfo, async (req, res) => {
       next_of_kin_occupation,
       relationship_with_next_of_kin,
       password,
-      member_type // should be either 'member' or 'verified_member'
+      member_type = 'member' // default to basic member
     } = req.body;
 
-    // Check if primary phone or email already exists
-    const existingMember = await pool.query(
-      "SELECT * FROM members WHERE primary_phone = $1 OR email = $2",
-      [primary_phone, email]
-    );
-
-    if (existingMember.rows.length > 0) {
-      return res.status(400).json({ error: "Member already exists" });
+    // Validate required fields
+    if (!last_name || !first_name || !nationality || !state_city || !local_government || 
+        !gender || !primary_phone || !marital_status || !date_of_birth || !occupation || 
+        !next_of_kin_name || !next_of_kin_phone || !relationship_with_next_of_kin || !password) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
+    console.log("Received registration request:", req.body);
 
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Insert new member
-    const newMember = await pool.query(
-      `INSERT INTO members (
-        last_name,
-        first_name,
-        nationality,
-        state_city,
-        local_government,
-        gender,
-        primary_phone,
-        email,
-        additional_contact_info,
-        marital_status,
-        date_of_birth,
-        occupation,
-        next_of_kin_name,
-        next_of_kin_phone,
-        next_of_kin_occupation,
-        relationship_with_next_of_kin,
-        password,
-        member_type
-      ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, 
-        $10, $11, $12, $13, $14, $15, $16, $17, $18
-      ) RETURNING *`,
-      [
-        last_name,
-        first_name,
-        nationality,
-        state_city,
-        local_government,
-        gender,
-        primary_phone,
-        email,
-        additional_contact_info,
-        marital_status,
-        date_of_birth,
-        occupation,
-        next_of_kin_name,
-        next_of_kin_phone,
-        next_of_kin_occupation,
-        relationship_with_next_of_kin,
-        hashedPassword,
-        member_type
-      ]
-    );
+    const query = `
+      INSERT INTO members (
+        id, last_name, first_name, nationality, state_city, local_government,
+        gender, primary_phone, email, additional_contact_info, marital_status,
+        date_of_birth, occupation, next_of_kin_name, next_of_kin_phone,
+        next_of_kin_occupation, relationship_with_next_of_kin, password, member_type
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+      RETURNING id, first_name, last_name, email, member_type, created_at
+    `;
 
-    // Generate token using returned user (optional)
-    const token = jwtGenerator(newMember.rows[0].id); // or however your jwtGenerator is structured
+    const values = [
+      uuidv4(),
+      last_name,
+      first_name,
+      nationality,
+      state_city,
+      local_government,
+      gender,
+      primary_phone,
+      email || null,
+      additional_contact_info || null,
+      marital_status,
+      new Date(date_of_birth),
+      occupation,
+      next_of_kin_name,
+      next_of_kin_phone,
+      next_of_kin_occupation || null,
+      relationship_with_next_of_kin,
+      hashedPassword,
+      member_type
+    ];
 
-    res.json({ token });
-  } catch (err) {
-    console.error("Registration error:", err.message);
-    return res.status(500).json({ error: "Server error" });
-  }
-});
+    const result = await pool.query(query, values);
+    const newMember = result.rows[0];
 
+    res.status(201).json({
+      message: 'Member registered successfully',
+      member: newMember
+    });
 
-
-
-router.post("/login", validInfo, async (req, res) => {
-  const { user_email, password } = req.body;
-
-  try {
-    // Check if the user exists
-    const userQuery = await pool.query(
-      "SELECT * FROM users WHERE user_email = $1",
-      [user_email]
-    );
-
-    if (userQuery.rows.length === 0) {
-      return res.status(401).json({ error: "Invalid Credentials" });
+  } catch (error) {
+    console.error('Registration error:', error);
+    
+    // Handle duplicate email or phone
+    if (error.code === '23505') {
+      if (error.constraint.includes('email')) {
+        return res.status(400).json({ error: 'Email already exists' });
+      } else if (error.constraint.includes('primary_phone')) {
+        return res.status(400).json({ error: 'Phone number already exists' });
+      }
     }
-
-    const user = userQuery.rows[0];
-
-    // Compare the password
-    const isValidPassword = await bcrypt.compare(password, user.password);
-
-    if (!isValidPassword) {
-      return res.status(401).json({ error: "Invalid Credentials" });
-    }
-
-    // Generate JWT Token
-    const token = jwtGenerator(user);
-
-    return res.json({ token });
-  } catch (err) {
-    console.error("Login error:", err.message);
-    return res.status(500).json({ error: "Server Error" });
+    
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-
-router.get("/verify", authorization, (req, res) => {
-  try {
-    res.json(true);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Server Error" });
-  }
-});
 module.exports = router;
