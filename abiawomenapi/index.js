@@ -110,6 +110,63 @@ app.post('/register', async (req, res) => {
   }
 });
 
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate required fields
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email/phone and password are required' });
+    }
+
+    console.log("Received login request for:", email_or_phone);
+
+    // Find user by email or phone
+    const query = `
+      SELECT id, first_name, last_name, email, member_type, password 
+      FROM members 
+      WHERE email = $1 OR primary_phone = $1
+    `;
+    
+    const result = await pool.query(query, [email]);
+    
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const user = result.rows[0];
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // You might want to generate a JWT token here for authentication
+    // const token = generateJWTToken(user.id);
+
+    // Return user info (excluding password)
+    const userResponse = {
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      member_type: user.member_type
+      // token: token // if using JWT
+    };
+
+    res.status(200).json({
+      message: 'Login successful',
+      user: userResponse
+    });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 app.listen(PORT, ()=> {
     console.log(`Server listening on the port ${PORT}`)
 })
