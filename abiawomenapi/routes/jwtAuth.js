@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator.js');
 const { v4: uuidv4 } = require('uuid'); // Add this missing import
 // const validInfo = require('../middleware/validinfo.js');
-// const authorization = require('../middleware/authorization.js');// Validation middleware
+const authorization = require('../middleware/authorization.js');// Validation middleware
 
 // Registration endpoint
 router.get("/", (req, res) => {
@@ -82,11 +82,9 @@ router.post('/register', async (req, res) => {
 
     const result = await pool.query(query, values);
     const newMember = result.rows[0];
+    const token = jwtGenerator(result.rows[0]); // ✅ use 'result' instead of undefined 'newUser'
+    res.json({ token });
 
-    res.status(201).json({
-      message: 'Member registered successfully',
-      member: newMember
-    });
 
   } catch (error) {
     console.error('Registration error:', error);
@@ -106,23 +104,23 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { email_or_phone, password } = req.body;
+    const { email, password } = req.body;
 
     // Validate required fields
-    if (!email_or_phone || !password) {
-      return res.status(400).json({ error: 'Email/phone and password are required' });
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    console.log("Received login request for:", email_or_phone);
+    // console.log("Received login request for:", email_or_phone);
 
     // Find user by email or phone
     const query = `
       SELECT id, first_name, last_name, email, member_type, password 
       FROM members 
-      WHERE email = $1 OR primary_phone = $1
+      WHERE email = $1
     `;
     
-    const result = await pool.query(query, [email_or_phone]);
+    const result = await pool.query(query, [email]);
     
     if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -157,6 +155,18 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+router.get("/verify", authorization, (req, res) => {
+  try {
+    console.log("HELLO, ")
+    res.json(true);
+  } catch (err) {
+    console.log("work")
+    console.error(err.message);
+    res.status(500).json({ error: "Server Error" });
   }
 });
 

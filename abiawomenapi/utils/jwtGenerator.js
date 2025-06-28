@@ -6,8 +6,8 @@ function jwtGenerator(user) {
   const payload = {
     user: { 
       id: user.id,
-      user_email: user.user_email, // Must match DB column names
-      user_name: user.user_name, 
+      user_email: user.email, // Must match DB column names
+      user_name: user.first_name, 
       member_type: user.member_type // Ensure this is included if needed
     }
   };
