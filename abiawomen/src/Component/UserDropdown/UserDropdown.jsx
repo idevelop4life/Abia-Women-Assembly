@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-function UserDropdown() {
+function UserDropdown({ onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -14,6 +14,11 @@ function UserDropdown() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    onLogout();
+  };
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -45,9 +50,12 @@ function UserDropdown() {
           <a href="EmpowermentPrograms" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
             Empowerment Programs
           </a>
-          <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+          >
             Log out
-          </a>
+          </button>
         </div>
       )}
     </div>

@@ -1,25 +1,55 @@
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
 import Hero from './Component/Hero/Hero';
 import Information from './Component/Information/Information';
 import Touch from './Component/Touch/Touch';
 import Footer from './Component/Footer/Footer';
-import React from 'react';
-import './App.css';
 import Navbar from './Component/Navbar/Navbar';
 import AboutPage from './Component/AboutPage/AboutPage';
-import {BrowserRouter} from 'react-router-dom';
-import { Routes, Route } from 'react-router-dom';
 import ServicesPage from './Component/ServicesPage/ServicesPage';
 import Contact from './Component/Contact/Contact';
 import UpcomingEvent from './Component/UpcomingEvent/UpcomingEvent';
 import EventsGallery from './Component/EventsGallery/EventsGallery';
 import Login from './Component/LogIn/Login';
 import MyDonation from './Component/MyDonation/MyDonation';
-import MyDashboard from './Component/MyDashboard/MyDashboard'
+import MyDashboard from './Component/MyDashboard/MyDashboard';
 import UpdateProfile from './Component/UpdateProfile/UpdateProfile';
 import BenefitPrograms from './Component/BenefitPrograms/BenefitPrograms';
 import EmpowermentPrograms from './Component/EmpowermentPrograms/EmpowermentPrograms';
 import Register from './Component/Register/Register';
+
+import './App.css';
+
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const checkAuthenticated = async () => {
+    try {
+      const res = await fetch("http://localhost:9000/auth/verify", {
+        method: "GET",
+        headers: { token: localStorage.token },
+      });
+      const parseRes = await res.json();
+      console.log(parseRes);
+      if (parseRes === true) {
+        await setIsAuthenticated(true);
+        console.log("User is authenticated");
+      } else {
+        await setIsAuthenticated(false);
+        console.log("isAuthenticated 2: ", isAuthenticated);
+      }
+      console.log("isAuthenticated: ", isAuthenticated);
+      console.log(parseRes);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthenticated();
+  }, []);
+
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
@@ -27,19 +57,30 @@ function App() {
 
         <main className="flex-grow">
           <Routes>
-            {/* Home Page */}
-            <Route path="/" element={
-              <>
-                <Hero />
-                <Information />
-                <Touch />
-              </>
-            } />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero />
+                  <Information />
+                  <Touch />
+                </>
+              }
+            />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/Services" element={<ServicesPage />} />
             <Route path="/Contact" element={<Contact />} />
-            <Route path="/UpcomingEvent" element={<UpcomingEvent />} />
-            <Route path="/EventsGallery" element={<EventsGallery />} />
+
+            <Route 
+              path="/UpcomingEvent" 
+              element={
+                isAuthenticated ? (<UpcomingEvent />) : (<Navigate to="/" replace />)
+                } />
+            <Route 
+              path="/EventsGallery" 
+              element={
+                isAuthenticated ? (<EventsGallery />) : (<Navigate to="/" replace />)
+                } />
             <Route path="/MyDonations" element={<MyDonation />} />
             <Route path="/MyDashboard" element={<MyDashboard />} />
             <Route path="/UpdateProfile" element={<UpdateProfile />} />
