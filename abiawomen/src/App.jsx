@@ -22,7 +22,7 @@ import Register from './Component/Register/Register';
 import './App.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const checkAuthenticated = async () => {
     try {
@@ -45,11 +45,18 @@ function App() {
       console.error(err.message);
     }
   };
+  const isProfileComplete = async () => {
+    try{
+      console.log("Hello")
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     checkAuthenticated();
+    isProfileComplete();
   }, []);
-
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
