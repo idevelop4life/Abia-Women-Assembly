@@ -159,12 +159,104 @@ router.post('/login', async (req, res) => {
 });
 
 
+router.post('/google-login', async (req, res) => {
+  const { google_id, email, first_name, last_name } = req.body;
+  console.log(req.body)
+
+  if (!google_id) {
+    return res.status(400).json({ error: "google_id is required" });
+  }
+
+  try {
+    const existingUser = await pool.query(
+      'SELECT * FROM members WHERE google_id = $1',
+      [google_id]
+    );
+
+    let user;
+
+    if (existingUser.rows.length > 0) {
+      user = existingUser.rows[0];
+    } else {
+      if (email) {
+        const emailExists = await pool.query(
+          'SELECT * FROM members WHERE email = $1',
+          [email]
+        );
+        if (emailExists.rows.length > 0) {
+          return res.status(400).json({ error: "Email already registered" });
+        }
+      }
+
+      const result = await pool.query(
+        `INSERT INTO members (google_id, email, first_name, last_name, profile_complete, member_type)
+         VALUES ($1, $2, $3, $4, false, 'member')
+         RETURNING *`,
+        [google_id, email, first_name, last_name]
+      );
+
+      user = result.rows[0];
+    }
+
+    const token = jwtGenerator(user);
+
+    return res.json({
+      message: existingUser.rows.length > 0 ? "User exists" : "New user created",
+      profile_complete: user.profile_complete,
+      member_id: user.id,
+      token, // send token here
+    });
+
+  } catch (error) {
+    console.error("Error during Google login:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+router.post('/facebook', async (req, res) => {
+  const { accessToken } = req.body;
+
+  if (!accessToken) {
+    return res.status(400).json({ error: 'Missing access token' });
+  }
+
+  try {
+    // Fetch basic user info from Facebook
+    const fbRes = await axios.get(
+      `https://graph.facebook.com/me?fields=id,first_name,last_name,email&access_token=${accessToken}`
+    );
+
+    const { id: facebookId, first_name, last_name, email } = fbRes.data;
+
+    // Insert or update member
+    const result = await pool.query(
+      `
+      INSERT INTO members (facebook_id, first_name, last_name, email)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (facebook_id)
+      DO UPDATE SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, email = EXCLUDED.email
+      RETURNING *
+      `,
+      [facebookId, first_name, last_name, email]
+    );
+
+    const member = result.rows[0];
+
+    // Return the user (or generate JWT if needed)
+    res.json({ member });
+
+  } catch (err) {
+    console.error('Facebook login error:', err.message);
+    res.status(401).json({ error: 'Invalid Facebook token' });
+  }
+});
+
+
 router.get("/verify", authorization, (req, res) => {
   try {
-    console.log("HELLO, ")
     res.json(true);
   } catch (err) {
-    console.log("work")
     console.error(err.message);
     res.status(500).json({ error: "Server Error" });
   }

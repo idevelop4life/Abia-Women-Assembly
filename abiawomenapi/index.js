@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/auth", require("./routes/jwtAuth.js"));
+app.use('/members', require("./routes/member.js"));
 
 
 app.listen(PORT, ()=> {
