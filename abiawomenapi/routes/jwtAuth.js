@@ -2,9 +2,8 @@ const router = require('express').Router();
 const pool = require('../db.js')
 const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator.js');
-const { v4: uuidv4 } = require('uuid'); // Add this missing import
-// const validInfo = require('../middleware/validinfo.js');
-const authorization = require('../middleware/authorization.js');// Validation middleware
+const { v4: uuidv4 } = require('uuid'); 
+const authorization = require('../middleware/authorization.js');
 
 // Registration endpoint
 router.get("/", (req, res) => {
@@ -229,7 +228,12 @@ router.post('/facebook', async (req, res) => {
 
     const { id: facebookId, first_name, last_name, email } = fbRes.data;
 
-    // Insert or update member
+    // ✅ Check if email is returned
+    if (!email) {
+      return res.status(400).json({ error: 'Email permission not granted by Facebook' });
+    }
+
+    // Insert or update member in your database
     const result = await pool.query(
       `
       INSERT INTO members (facebook_id, first_name, last_name, email)
@@ -243,7 +247,7 @@ router.post('/facebook', async (req, res) => {
 
     const member = result.rows[0];
 
-    // Return the user (or generate JWT if needed)
+    // Send the user back (you could issue a JWT here too)
     res.json({ member });
 
   } catch (err) {
@@ -251,7 +255,6 @@ router.post('/facebook', async (req, res) => {
     res.status(401).json({ error: 'Invalid Facebook token' });
   }
 });
-
 
 router.get("/verify", authorization, (req, res) => {
   try {
