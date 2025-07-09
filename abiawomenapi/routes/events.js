@@ -4,27 +4,30 @@ const pool = require('../db');
 const { v4: uuidv4 } = require('uuid');
 
 // Get all events
-router.get('/events', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT events.*, categories.name AS category_name
-       FROM events
-       LEFT JOIN categories ON events.category_id = categories.id
-       ORDER BY event_date DESC`
-    );
-    res.json(result.rows);
+  `SELECT events.*
+   FROM events
+   ORDER BY event_date DESC`
+);
+
+    res.json({
+      success: true,
+      data: result.rows
+    });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    console.error(err); 
+    res.status(500).json({ error: err.message }); 
   }
 });
 
 // Get one event by ID
-router.get('/events/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT events.*, categories.name AS category_name
+      `SELECT events.*
        FROM events
-       LEFT JOIN categories ON events.category_id = categories.id
        WHERE events.id = $1`,
       [req.params.id]
     );
@@ -36,7 +39,7 @@ router.get('/events/:id', async (req, res) => {
 });
 
 // Create an event
-router.post('/events', async (req, res) => {
+router.post('/', async (req, res) => {
   const {
     name,
     category_id,
