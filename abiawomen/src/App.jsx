@@ -20,6 +20,7 @@ import EmpowermentPrograms from './Component/EmpowermentPrograms/EmpowermentProg
 import Register from './Component/Register/Register';
 
 import './App.css';
+import { EventDetail } from './Component/EventsDetail/EventDetail';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -88,6 +89,11 @@ function App() {
               element={
                 isAuthenticated ? (<EventsGallery />) : (<Navigate to="/" replace />)
                 } />
+            <Route
+              path='/EventDetail/:id'
+              element={isAuthenticated ? <EventDetail /> : <Navigate to="/" replace />}
+            />
+
             <Route path="/MyDonations" element={<MyDonation />} />
             <Route path="/MyDashboard" element={<MyDashboard />} />
             <Route path="/UpdateProfile" element={<UpdateProfile />} />
