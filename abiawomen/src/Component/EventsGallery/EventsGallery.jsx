@@ -1,4 +1,7 @@
 import React from 'react'
+import image1 from "../../assets/about_image_1.png"
+import image2 from "../../assets/about_image_2.png"
+import image3 from "../../assets/about_image_3.png"
 
 export default function EventsGallery() {
   return (
@@ -7,12 +10,12 @@ export default function EventsGallery() {
             <h1 className="text-3xl font-bold py-5 text-[#194911]">OUR VOICE OUR IMPACT</h1>
         </div>
         <div>
-            <div className='flex flex-row gap-5'>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
+            <div className='flex flex-row gap-2'>
+                <img src={image1} alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
+                <img src={image2} alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
             </div>
             <div className='flex flex-row gap-2 w-full overflow-x-auto'>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
+                <img src={image3} alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
                 <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
                 <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
             </div>
