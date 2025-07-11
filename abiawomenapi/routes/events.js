@@ -42,12 +42,12 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   const {
     name,
-    category_id,
     event_date,
     event_day,
     description,
     contact_phone,
-    contact_email
+    contact_email,
+    category
   } = req.body;
 
   const id = uuidv4();
@@ -55,14 +55,15 @@ router.post('/', async (req, res) => {
   try {
     const result = await pool.query(
       `INSERT INTO events (
-        id, name, category_id, event_date, event_day, description,
-        contact_phone, contact_email
+        id, name, event_date, event_day, description,
+        contact_phone, contact_email, category
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *`,
-      [id, name, category_id || null, event_date, event_day, description, contact_phone, contact_email]
+      [id, name, event_date, event_day, description, contact_phone, contact_email, category]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
+    console.error('Insert error:', err);
     res.status(500).json({ error: 'Failed to create event' });
   }
 });
