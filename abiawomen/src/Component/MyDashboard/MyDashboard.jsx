@@ -1,3 +1,4 @@
+import AWA1 from '../../assets/AWA 1.png'
 export default function MyDashboard() {
   return (
     <div className='mx-10 my-10'>
@@ -19,7 +20,7 @@ export default function MyDashboard() {
                 <div className=" border flex justify-start flex-col py-3 px-3 my-3">
                     <div className="flex justify-center">
                         <img 
-                        src="https://picsum.photos/200/200" 
+                        src={AWA1}
                         alt="Profile placeholder"
                         className="w-16 h-16"
                         />
