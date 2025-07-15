@@ -3,8 +3,10 @@ import { Country, State } from 'country-state-city';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import SocialButton from '../SocialButton/SocialButton';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     last_name: '',
     first_name: '',
@@ -63,15 +65,16 @@ export default function SignIn() {
       });
 
       const data = await res.json();
+      console.log(data)
 
       if (!res.ok) {
         setError(data.error || 'Something went wrong');
         return;
       }
 
-      // Save token to localStorage
-      localStorage.setItem('token', data.token);
-      alert('Registration successful!');
+    localStorage.setItem('token', data.token);
+    alert('Registration successful!');
+    navigate("/"); // 👈 lowercase, correct function
       // Optionally redirect or clear form here
     } catch (err) {
       setError('Network error');

@@ -2,6 +2,11 @@ import React from 'react'
 import image1 from "../../assets/about_image_1.png"
 import image2 from "../../assets/about_image_2.png"
 import image3 from "../../assets/about_image_3.png"
+import AWAOutreact from "../../assets/AWA2Outreac.png"
+import image5 from "../../assets/image5.png"
+import image6 from "../../assets/image6.png"
+import image7 from "../../assets/image7.png"
+import image8 from "../../assets/image8.png"
 
 export default function EventsGallery() {
   return (
@@ -9,22 +14,25 @@ export default function EventsGallery() {
         <div>
             <h1 className="text-3xl font-bold py-5 text-[#194911]">OUR VOICE OUR IMPACT</h1>
         </div>
-        <div>
-            <div className='flex flex-row gap-2'>
-                <img src={image1} alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
-                <img src={image2} alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
-            </div>
-            <div className='flex flex-row gap-2 w-full overflow-x-auto'>
-                <img src={image3} alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-96 object-cover rounded-lg mb-5"/>
-            </div>
+      <div className='w-full max-w-7xl mx-auto px-4'>
+        <div className='flex gap-2 mb-5'>
+            <img src={image1} alt="Event" className="w-1/2 h-96 object-cover rounded-lg" />
+            <img src={image2} alt="Event" className="w-1/2 h-96 object-cover rounded-lg" />
         </div>
+
+        <div className='flex gap-2'>
+            <img src={image3} alt="Event" className="w-1/3 h-96 object-cover rounded-lg" />
+            <img src={AWAOutreact} alt="Event" className="w-1/3 h-96 object-cover rounded-lg" />
+            <img src={image5} alt="Event" className="w-1/3 h-96 object-cover rounded-lg" />
+        </div>
+</div>
+
+
         <div className="flex flex-col md:flex-row justify-center w-full"> 
             <div className='w-full md:w-1/2 md:pr-10'>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-60 object-cover rounded-lg mb-5"/>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-60 object-cover rounded-lg mb-5"/>
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Event" className="w-full h-60 object-cover rounded-lg mb-5"/>
+                <img src={image6} alt="Event" className="w-full h-60 object-cover rounded-lg mb-5"/>
+                <img src={image7} alt="Event" className="w-full h-60 object-cover rounded-lg mb-5"/>
+                <img src={image8} alt="Event" className="w-full h-60 object-cover rounded-lg mb-5"/>
             </div>
             <div className='w-full md:w-1/2 md:pl-10 mt-10 md:mt-0'>
                 <div className='p-10 my-12 bg-[#F2E3C4]'>
@@ -57,7 +65,7 @@ export default function EventsGallery() {
                     <p>Fatima O.</p>
 
                 </div>
-                <button className='w-full bg-[#E02B2B] text-white px-4 py-2 rounded'>See More Stories</button>
+                <button className='w-full bg-[#E02B2B] text-white px-4 py-2 rounded my-5'>See More Stories</button>
             </div>
 
         </div>

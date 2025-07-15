@@ -1,5 +1,8 @@
 import AWA1 from '../../assets/AWA 1.png'
+import { useNavigate } from 'react-router-dom'
+
 export default function MyDashboard() {
+    const navigate = useNavigate()
   return (
     <div className='mx-10 my-10'>
         <h1 className='font-bold text-2xl my-10'>Welcome, Grace!<a></a></h1>
@@ -41,7 +44,8 @@ export default function MyDashboard() {
         <div className='flex flex-row justify-between my-5'>
             <div className='flex flex-col w-[48%]'>
                 <button className='w-full py-4 bg-red my-2 rounded-md text-white bg-red-700'>Update Profile</button>
-                <button className='w-full py-4 bg-green-600 my-2 rounded-md text-white'>View Events</button>
+                <button className='w-full py-4 bg-green-600 my-2 rounded-md text-white'
+                onClick={()=>navigate('/BenefitPrograms')}>View Events</button>
             </div>
             <div className='flex flex-col w-[48%]'>
                 <button className='w-full p-4 bg-green-950 my-2 rounded-md text-white'>Benefits Program</button>
@@ -50,7 +54,7 @@ export default function MyDashboard() {
         </div>
         <div> 
         </div>
-        <div>
+        <div className='border'>
             
             
         </div>

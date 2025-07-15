@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
 import GoogleLoginButton from '../GoogleLoginButton/GoogleLoginButton';
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
 
 export default function SocialButtons() {
   const [login, setLogin] = useState(false);
@@ -9,11 +9,11 @@ export default function SocialButtons() {
   const [picture, setPicture] = useState('');
 
    const handleFacebookCallback = (response) => {
-  if (response?.status === "unknown") {
-    console.error('Sorry!', 'Something went wrong with facebook Login.');
-    return;
-  }
-  console.log(response);
+  // if (response?.status === "unknown") {
+  //   console.error('Sorry!', 'Something went wrong with facebook Login.');
+  //   return;
+  // }
+  // console.log(response);
 
   /*
   Sample response object you will get:

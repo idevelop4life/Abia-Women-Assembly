@@ -18,7 +18,7 @@ import UpdateProfile from './Component/UpdateProfile/UpdateProfile';
 import BenefitPrograms from './Component/BenefitPrograms/BenefitPrograms';
 import EmpowermentPrograms from './Component/EmpowermentPrograms/EmpowermentPrograms';
 import Register from './Component/Register/Register';
-
+import { MakeDonation } from './Component/MakeDonation/MakeDonation';
 import './App.css';
 import { EventDetail } from './Component/EventsDetail/EventDetail';
 
@@ -32,18 +32,13 @@ function App() {
         headers: { token: localStorage.token },
       });
       const parseRes = await res.json();
-      console.log(parseRes);
       if (parseRes === true) {
         await setIsAuthenticated(true);
-        console.log("User is authenticated");
       } else {
         await setIsAuthenticated(false);
-        console.log("isAuthenticated 2: ", isAuthenticated);
       }
-      console.log("isAuthenticated: ", isAuthenticated);
-      console.log(parseRes);
+
     } catch (err) {
-      console.error(err.message);
     }
   };
   const isProfileComplete = async () => {
@@ -94,6 +89,7 @@ function App() {
               element={isAuthenticated ? <EventDetail /> : <Navigate to="/" replace />}
             />
 
+            <Route path="/MakeDonation" element={<MakeDonation/>}/>
             <Route path="/MyDonations" element={<MyDonation />} />
             <Route path="/MyDashboard" element={<MyDashboard />} />
             <Route path="/UpdateProfile" element={<UpdateProfile />} />

@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function UserDropdown({ onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -44,10 +46,16 @@ function UserDropdown({ onLogout }) {
           <a href="UpdateProfile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
             Update Profile
           </a>
-          <a href="BenefitPrograms" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <a href="BenefitPrograms" 
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          onClick={()=>navigate('/BenefitProgram')}
+          >
             Benefit Programs
           </a>
-          <a href="EmpowermentPrograms" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <a href="EmpowermentPrograms" 
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          onClick={()=>navigate('/EmpowermentPrograms')}>
+          
             Empowerment Programs
           </a>
           <button
