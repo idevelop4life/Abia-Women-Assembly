@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
 
 router.post('/register', async (req, res) => {
   console.log("Registration endpoint hit");
+
   try {
     const {
       last_name,
@@ -31,29 +32,46 @@ router.post('/register', async (req, res) => {
       next_of_kin_occupation,
       relationship_with_next_of_kin,
       password,
-      member_type = 'member' // default to basic member
+      member_type = 'member',
+      profile_picture // optional
     } = req.body;
 
     // Validate required fields
-    if (!last_name || !first_name || !nationality || !state_city || !local_government || 
-        !gender || !primary_phone || !marital_status || !date_of_birth || !occupation || 
+    if (!last_name || !first_name || !nationality || !state_city || !local_government ||
+        !gender || !primary_phone || !marital_status || !date_of_birth || !occupation ||
         !next_of_kin_name || !next_of_kin_phone || !relationship_with_next_of_kin || !password) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
+
     console.log("Received registration request:", req.body);
 
     // Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Insert new member
+    // Generate default profile picture from initials if none is uploaded
+    let finalProfilePicture = profile_picture;
+
+    if (!finalProfilePicture) {
+      const safeInitial = (name) => name?.[0]?.toUpperCase() || '';
+      const initials = `${safeInitial(first_name)}${safeInitial(last_name)}`;
+      const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+
+      finalProfilePicture = `https://res.cloudinary.com/${cloudName}/image/upload/` +
+        `w_200,h_200,c_thumb,r_max,` + // circle thumb
+        `l_text:arial_60_bold:${initials},co_rgb:ffffff,g_center/` +
+        `default_avatar.png`; // You must upload this to Cloudinary!
+    }
+
+    // Insert new member into DB
     const query = `
       INSERT INTO members (
         id, last_name, first_name, nationality, state_city, local_government,
         gender, primary_phone, email, additional_contact_info, marital_status,
         date_of_birth, occupation, next_of_kin_name, next_of_kin_phone,
-        next_of_kin_occupation, relationship_with_next_of_kin, password, member_type
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+        next_of_kin_occupation, relationship_with_next_of_kin, password, member_type,
+        profile_picture
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
       RETURNING id, first_name, last_name, email, member_type, created_at
     `;
 
@@ -76,30 +94,31 @@ router.post('/register', async (req, res) => {
       next_of_kin_occupation || null,
       relationship_with_next_of_kin,
       hashedPassword,
-      member_type
+      member_type,
+      finalProfilePicture
     ];
 
     const result = await pool.query(query, values);
     const newMember = result.rows[0];
-    const token = jwtGenerator(result.rows[0]); // ✅ use 'result' instead of undefined 'newUser'
-    res.json({ token });
+    const token = jwtGenerator(newMember);
 
+    res.json({ token });
 
   } catch (error) {
     console.error('Registration error:', error);
-    
-    // Handle duplicate email or phone
+
     if (error.code === '23505') {
-      if (error.constraint.includes('email')) {
+      if (error.constraint?.includes('email')) {
         return res.status(400).json({ error: 'Email already exists' });
-      } else if (error.constraint.includes('primary_phone')) {
+      } else if (error.constraint?.includes('primary_phone')) {
         return res.status(400).json({ error: 'Phone number already exists' });
       }
     }
-    
+
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 router.post('/login', async (req, res) => {
   try {
