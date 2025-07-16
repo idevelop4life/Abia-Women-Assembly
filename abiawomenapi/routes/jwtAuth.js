@@ -4,6 +4,19 @@ const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator.js');
 const { v4: uuidv4 } = require('uuid'); 
 const authorization = require('../middleware/authorization.js');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,  
+  api_key: process.env.CLOUDINARY_API_KEY,         
+  api_secret: process.env.CLOUDINARY_API_SECRET,   
+});
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 
 // Registration endpoint
 router.get("/", (req, res) => {
@@ -49,18 +62,12 @@ router.post('/register', async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Generate default profile picture from initials if none is uploaded
+    // Use provided profile picture or fallback to default avatar
     let finalProfilePicture = profile_picture;
 
     if (!finalProfilePicture) {
-      const safeInitial = (name) => name?.[0]?.toUpperCase() || '';
-      const initials = `${safeInitial(first_name)}${safeInitial(last_name)}`;
       const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-
-      finalProfilePicture = `https://res.cloudinary.com/${cloudName}/image/upload/` +
-        `w_200,h_200,c_thumb,r_max,` + // circle thumb
-        `l_text:arial_60_bold:${initials},co_rgb:ffffff,g_center/` +
-        `default_avatar.png`; // You must upload this to Cloudinary!
+      finalProfilePicture = `https://res.cloudinary.com/${cloudName}/image/upload/default_avatar.png`;
     }
 
     // Insert new member into DB
@@ -118,7 +125,6 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 router.post('/login', async (req, res) => {
   try {
@@ -274,13 +280,103 @@ router.post('/facebook', async (req, res) => {
     res.status(401).json({ error: 'Invalid Facebook token' });
   }
 });
-
-router.get("/verify", authorization, (req, res) => {
+router.get("/verify", authorization, async (req, res) => {
   try {
-    res.json(true);
+    const userId = req.user.user.id;
+
+    const result = await pool.query(
+      `SELECT first_name, last_name, email, primary_phone, nationality, state_city, profile_picture 
+       FROM members 
+       WHERE id = $1`, 
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const user = result.rows[0];
+
+    res.json({
+      verified: true,
+      user
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "Server Error" });
+  }
+});
+
+router.patch('/edit', authorization, upload.single('profile_picture'), async (req, res) => {
+  try {
+    const userId = req.user.user.id;
+    const {
+      first_name,
+      last_name,
+      email,
+      primary_phone,
+      nationality,
+      state_city,
+      password,
+    } = req.body;
+
+    // Fetch existing user
+    const existingUser = await pool.query('SELECT * FROM members WHERE id = $1', [userId]);
+    if (existingUser.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    let hashedPassword = existingUser.rows[0].password;
+    if (password) {
+      const saltRounds = 10;
+      hashedPassword = await bcrypt.hash(password, saltRounds);
+    }
+
+    let profilePictureUrl = existingUser.rows[0].profile_picture;
+    if (req.file) {
+      profilePictureUrl = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'profile_pictures' },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result.secure_url);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+    }
+
+    const updateQuery = `
+      UPDATE members
+      SET 
+        first_name = $1,
+        last_name = $2,
+        email = $3,
+        primary_phone = $4,
+        nationality = $5,
+        state_city = $6,
+        password = $7,
+        profile_picture = $8
+      WHERE id = $9
+      RETURNING id, first_name, last_name, email, primary_phone, nationality, state_city, profile_picture
+    `;
+    const values = [
+      first_name,
+      last_name,
+      email,
+      primary_phone,
+      nationality,
+      state_city,
+      hashedPassword,
+      profilePictureUrl,
+      userId,
+    ];
+    const updatedUser = await pool.query(updateQuery, values);
+
+    res.json({ message: 'Profile updated successfully', user: updatedUser.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server Error' });
   }
 });
 

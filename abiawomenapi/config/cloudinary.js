@@ -1,4 +1,7 @@
 // config/cloudinary.js
+// At the top of cloudinary.js
+const path = require('path');
+
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
@@ -12,7 +15,7 @@ cloudinary.config({
 async function uploadDefaultAvatar() {
   try {
     const result = await cloudinary.uploader.upload(
-      path.join(__dirname, 'default_avatar.png'),
+      path.join(__dirname, './default_avatar.jpg'),
       {
         public_id: 'default_avatar',
         overwrite: true, // in case it already exists
