@@ -24,6 +24,8 @@ import { EventDetail } from './Component/EventsDetail/EventDetail';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [userImage, setUserImage] = useState(null)
+  const [userInfo, setUserInfo] = useState([])
 
   const checkAuthenticated = async () => {
     try {
@@ -32,7 +34,10 @@ function App() {
         headers: { token: localStorage.token },
       });
       const parseRes = await res.json();
-      if (parseRes === true) {
+      setUserImage(parseRes.user.profile_picture)
+      setUserInfo(parseRes.user)
+      console.log(parseRes.user.profile_picture)
+      if (parseRes.verified === true) {
         await setIsAuthenticated(true);
       } else {
         await setIsAuthenticated(false);
@@ -56,7 +61,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        <Navbar userImage={userImage}/>
 
         <main className="flex-grow">
           <Routes>
@@ -92,7 +97,7 @@ function App() {
             <Route path="/MakeDonation" element={<MakeDonation/>}/>
             <Route path="/MyDonations" element={<MyDonation />} />
             <Route path="/MyDashboard" element={<MyDashboard />} />
-            <Route path="/UpdateProfile" element={<UpdateProfile />} />
+            <Route path="/UpdateProfile" element={<UpdateProfile userImage={userImage} userInfo={userInfo}/>} />
             <Route path="/BenefitPrograms" element={<BenefitPrograms />} />
             <Route path="/EmpowermentPrograms" element={<EmpowermentPrograms />} />
             <Route path="/Register" element={<Register />} />

@@ -4,9 +4,9 @@ import UserDropdown from '../UserDropdown/UserDropdown';
 import { Link } from 'react-router-dom';
 import EventDropDown from '../EventDropDown/EventDropDown';
 
-function SignedInFeature({ isSignedIn, onLogout }) {
+function SignedInFeature({ isSignedIn, onLogout, userImage }) {
   if (isSignedIn) {
-    return <UserDropdown onLogout={onLogout} />;
+    return <UserDropdown onLogout={onLogout} userImage={userImage}/>;
   }
   return (
     <button className="md:hidden text-gray-800 hover:text-blue-500">
@@ -17,7 +17,7 @@ function SignedInFeature({ isSignedIn, onLogout }) {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({userImage}) {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function Navbar() {
               <Link to="/Register">Sign In</Link>
             </button>
           )}
-          <SignedInFeature isSignedIn={isSignedIn} onLogout={handleLogout} />
+          <SignedInFeature isSignedIn={isSignedIn} onLogout={handleLogout} userImage={userImage}/>
         </div>
       </nav>
     </div>

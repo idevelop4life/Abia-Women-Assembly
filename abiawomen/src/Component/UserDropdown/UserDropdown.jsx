@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function UserDropdown({ onLogout }) {
+function UserDropdown({ onLogout, userImage }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ function UserDropdown({ onLogout }) {
         className="flex items-center focus:outline-none"
       >
         <img
-          src="https://randomuser.me/api/portraits/women/42.jpg"
+          src={userImage}
           alt="User Avatar"
           className="w-10 h-10 rounded-full object-cover"
         />
