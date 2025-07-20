@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import SocialButton from '../SocialButton/SocialButton';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignIn() {
+export default function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     last_name: '',
@@ -37,14 +37,14 @@ export default function SignIn() {
   };
 
   // This function is called when Facebook login is successful
-  function handleFacebookData(userInfo) {
-    setFormData((prev) => ({
-      ...prev,
-      first_name: userInfo.first_name || '',
-      last_name: userInfo.last_name || '',
-      email: userInfo.email || '',
-    }));
-  }
+  // function handleFacebookData(userInfo) {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     first_name: userInfo.first_name || '',
+  //     last_name: userInfo.last_name || '',
+  //     email: userInfo.email || '',
+  //   }));
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -400,7 +400,7 @@ export default function SignIn() {
         </div>
 
         {/* Social Buttons */}
-        <SocialButton onFacebookLoginSuccess={handleFacebookData} />
+        {/* <SocialButton onFacebookLoginSuccess={handleFacebookData} /> */}
 
         <div className="flex justify-center mt-5">
           <button

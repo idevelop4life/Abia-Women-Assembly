@@ -23,7 +23,7 @@ import './App.css';
 import { EventDetail } from './Component/EventsDetail/EventDetail';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userImage, setUserImage] = useState(null)
   const [userInfo, setUserInfo] = useState([])
 
@@ -33,30 +33,27 @@ function App() {
         method: "GET",
         headers: { token: localStorage.token },
       });
+
       const parseRes = await res.json();
+      console.log("parseRes", parseRes)
+
       setUserImage(parseRes.user.profile_picture)
       setUserInfo(parseRes.user)
-      console.log(parseRes.user.profile_picture)
+      console.log("profile pic",parseRes.user.profile_picture)
       if (parseRes.verified === true) {
+        console.log("true")
         await setIsAuthenticated(true);
       } else {
+        console.log("false")
         await setIsAuthenticated(false);
       }
 
     } catch (err) {
     }
   };
-  const isProfileComplete = async () => {
-    try{
-      console.log("Hello")
-    }catch(err){
-      console.log(err)
-    }
-  }
 
   useEffect(() => {
     checkAuthenticated();
-    isProfileComplete();
   }, []);
   return (
     <BrowserRouter>
