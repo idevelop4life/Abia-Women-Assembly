@@ -282,7 +282,8 @@ router.post('/facebook', async (req, res) => {
 });
 router.get("/verify", authorization, async (req, res) => {
   try {
-    const userId = req.user.user.id;
+    console.log("req",req.user)
+    const userId = req.user.id;
 
     const result = await pool.query(
       `SELECT first_name, last_name, email, primary_phone, nationality, state_city, profile_picture 
