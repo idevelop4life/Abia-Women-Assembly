@@ -310,7 +310,8 @@ router.get("/verify", authorization, async (req, res) => {
 
 router.patch('/edit', authorization, upload.single('profile_picture'), async (req, res) => {
   try {
-    const userId = req.user.user.id;
+    console.log("req.file.recent", req.user.id)
+    const userId = req.user.id;
     const {
       first_name,
       last_name,

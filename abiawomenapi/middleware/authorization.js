@@ -5,7 +5,7 @@ require("dotenv").config();
 
 module.exports = function(req, res, next) {
   const token = req.header("token");
-  console.log("toke", token)
+  console.log("token-now", token)
 
   if (token === undefined) {
     console.log("Not working")
