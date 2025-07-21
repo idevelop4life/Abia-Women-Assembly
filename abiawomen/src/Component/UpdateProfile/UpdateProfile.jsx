@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function UpdateProfile({ userImage }) {
+export default function UpdateProfile({ userImage, userInfo }) {
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -11,15 +11,15 @@ export default function UpdateProfile({ userImage }) {
     confirmPassword: '',
   });
 
-  // Fetch user info on component mount
+  // Fetch user info from backend if userInfo prop is not provided
   useEffect(() => {
     async function fetchUserInfo() {
       try {
         const response = await fetch('http://localhost:9000/auth/edit', {
-          method: 'GET',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            headers: { token: localStorage.token },
+            token: localStorage.token,
           },
         });
 
@@ -27,15 +27,14 @@ export default function UpdateProfile({ userImage }) {
           throw new Error('Failed to fetch user info');
         }
 
-        const userInfo = await response.json();
+        const data = await response.json();
 
-        // Set the form data based on response
         setFormData({
-          full_name: `${userInfo.first_name || ''} ${userInfo.last_name || ''}`,
-          email: userInfo.email || '',
-          phone: userInfo.primary_phone || '',
-          country: userInfo.nationality || '',
-          state: userInfo.state_city || '',
+          full_name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
+          email: data.email || '',
+          phone: data.primary_phone || '',
+          country: data.nationality || '',
+          state: data.state_city || '',
           password: '',
           confirmPassword: '',
         });
@@ -44,12 +43,66 @@ export default function UpdateProfile({ userImage }) {
       }
     }
 
-    fetchUserInfo();
-  }, []);
+    if (userInfo) {
+      setFormData({
+        full_name: `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim(),
+        email: userInfo.email || '',
+        phone: userInfo.primary_phone || '',
+        country: userInfo.nationality || '',
+        state: userInfo.state_city || '',
+        password: '',
+        confirmPassword: '',
+      });
+    } else {
+      fetchUserInfo();
+    }
+  }, [userInfo]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async () => {
+    // Optional: Validate passwords before sending (match, non-empty)
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    const [first_name, ...rest] = formData.full_name.trim().split(' ');
+    const last_name = rest.join(' ');
+
+    try {
+      const response = await fetch('http://localhost:9000/auth/edit', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          token: localStorage.token,
+        },
+        body: JSON.stringify({
+          first_name,
+          last_name,
+          email: formData.email,
+          primary_phone: formData.phone,
+          nationality: formData.country,
+          state_city: formData.state,
+          // Only send password if it's filled
+          ...(formData.password ? { password: formData.password } : {}),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      const result = await response.json();
+      console.log('Updated successfully:', result);
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error('Update error:', error);
+      alert("Failed to update profile.");
+    }
   };
 
   return (
@@ -58,7 +111,7 @@ export default function UpdateProfile({ userImage }) {
         <div className="w-40 h-40 rounded-full bg-black border-4 overflow-hidden flex items-center justify-center">
           <img
             className="w-full h-full object-cover"
-            src={userImage}
+            src={userImage || "https://res.cloudinary.com/dvozhxxtl/image/upload/default_avatar.png"}
             alt="User Avatar"
           />
         </div>
@@ -130,6 +183,7 @@ export default function UpdateProfile({ userImage }) {
             value={formData.password}
             onChange={handleChange}
             className="w-full border p-2"
+            placeholder="Leave blank to keep current password"
           />
         </div>
 
@@ -141,12 +195,18 @@ export default function UpdateProfile({ userImage }) {
             value={formData.confirmPassword}
             onChange={handleChange}
             className="w-full border p-2"
+            placeholder="Leave blank to keep current password"
           />
         </div>
 
         <div className="my-5 flex justify-between">
           <button className="border p-4 mx-3 bg-red-900 text-white rounded-lg">CANCEL</button>
-          <button className="border p-4 mx-3 bg-green-800 text-white rounded-lg">SAVE CHANGES</button>
+          <button
+            className="border p-4 mx-3 bg-green-800 text-white rounded-lg"
+            onClick={handleSave}
+          >
+            SAVE CHANGES
+          </button>
         </div>
       </div>
     </div>

@@ -3,12 +3,13 @@ import AWA1 from '../../assets/AWA 1.png'
 import { useNavigate } from 'react-router-dom'
 import Kite from '../../assets/kiteimage.png'
 
-export default function MyDashboard() {
+export default function MyDashboard(userImage) {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState("Option 1")
 
   const options = ["Option 1", "Option 2", "Option 3"]
+  console.log("userImage", userImage)
 
   return (
     <div className='mx-10 my-10'>
@@ -20,7 +21,7 @@ export default function MyDashboard() {
         <div className='flex items-center justify-center'>
           <img
             className="rounded-full border-4 w-40 h-40"
-            src="https://picsum.photos/400/300"
+            src={userImage.userImage || "https://via.placeholder.com/150"}
             alt="Random placeholder image"
           />
         </div>
@@ -59,7 +60,9 @@ export default function MyDashboard() {
 
       <div className='flex flex-row justify-between my-5'>
         <div className='flex flex-col w-[48%]'>
-          <button className='w-full py-4 my-2 rounded-md text-white bg-red-700'>Update Profile</button>
+          <button 
+          className='w-full py-4 my-2 rounded-md text-white bg-red-700'
+          onClick={()=>navigate('/UpdateProfile')}>Update Profile</button>
           <button
             className='w-full py-4 bg-green-600 my-2 rounded-md text-white'
             onClick={() => navigate('/BenefitPrograms')}
@@ -69,7 +72,9 @@ export default function MyDashboard() {
         </div>
         <div className='flex flex-col w-[48%]'>
           <button className='w-full p-4 bg-green-950 my-2 rounded-md text-white'>Benefits Program</button>
-          <button className='w-full p-4 bg-yellow-500 my-2 rounded-md text-white'>Empowerment Program</button>
+          <button
+           className='w-full p-4 bg-yellow-500 my-2 rounded-md text-white'
+           onClick={() => navigate('/EmpowermentPrograms')}>Empowerment Program</button>
         </div>
       </div>
 
