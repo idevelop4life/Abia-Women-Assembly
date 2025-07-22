@@ -17,7 +17,7 @@ function SignedInFeature({ isSignedIn, onLogout, userImage }) {
   );
 }
 
-export default function Navbar({userImage}) {
+export default function Navbar({userImage, isAuthenticated}) {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function Navbar({userImage}) {
                 <Link to="/About">About</Link>
               </a>
             </li>
-            <EventDropDown />
+            <EventDropDown isAuthenticated={isAuthenticated}/>
             <li>
               <a href="#" className="text-white hover:text-blue-500 transition-colors">
                 <Link to="/Contact">Contact</Link>

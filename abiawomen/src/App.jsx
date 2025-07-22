@@ -21,6 +21,7 @@ import Register from './Component/Register/Register';
 import { MakeDonation } from './Component/MakeDonation/MakeDonation';
 import './App.css';
 import { EventDetail } from './Component/EventsDetail/EventDetail';
+import { BenefitProgramSub } from './Component/BenefitProgramSub/BenefitProgramSub';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,7 +59,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        <Navbar userImage={userImage}/>
+        <Navbar userImage={userImage} isAuthenticated={isAuthenticated}/>
 
         <main className="flex-grow">
           <Routes>
@@ -90,7 +91,9 @@ function App() {
               path='/EventDetail/:id'
               element={isAuthenticated ? <EventDetail /> : <Navigate to="/" replace />}
             />
-
+            <Route
+              path="/BenefitProgramSub"
+              element={<BenefitProgramSub/>}/>
             <Route path="/MakeDonation" element={<MakeDonation/>}/>
             <Route path="/MyDonations" element={<MyDonation />} />
             <Route path="/MyDashboard" element={<MyDashboard userImage={userImage}/>} />

@@ -11,7 +11,8 @@ export default function UpdateProfile({ userImage, userInfo }) {
     confirmPassword: '',
   });
 
-  // Fetch user info from backend if userInfo prop is not provided
+  const [selectedImage, setSelectedImage] = useState(null);
+
   useEffect(() => {
     async function fetchUserInfo() {
       try {
@@ -64,7 +65,6 @@ export default function UpdateProfile({ userImage, userInfo }) {
   };
 
   const handleSave = async () => {
-    // Optional: Validate passwords before sending (match, non-empty)
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
@@ -74,22 +74,22 @@ export default function UpdateProfile({ userImage, userInfo }) {
     const last_name = rest.join(' ');
 
     try {
+      const data = new FormData();
+      data.append('first_name', first_name);
+      data.append('last_name', last_name);
+      data.append('email', formData.email);
+      data.append('primary_phone', formData.phone);
+      data.append('nationality', formData.country);
+      data.append('state_city', formData.state);
+      if (formData.password) data.append('password', formData.password);
+      if (selectedImage) data.append('profile_picture', selectedImage);
+
       const response = await fetch('http://localhost:9000/auth/edit', {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json',
           token: localStorage.token,
         },
-        body: JSON.stringify({
-          first_name,
-          last_name,
-          email: formData.email,
-          primary_phone: formData.phone,
-          nationality: formData.country,
-          state_city: formData.state,
-          // Only send password if it's filled
-          ...(formData.password ? { password: formData.password } : {}),
-        }),
+        body: data,
       });
 
       if (!response.ok) {
@@ -111,11 +111,23 @@ export default function UpdateProfile({ userImage, userInfo }) {
         <div className="w-40 h-40 rounded-full bg-black border-4 overflow-hidden flex items-center justify-center">
           <img
             className="w-full h-full object-cover"
-            src={userImage || "https://res.cloudinary.com/dvozhxxtl/image/upload/default_avatar.png"}
+            src={
+              selectedImage
+                ? URL.createObjectURL(selectedImage)
+                : userImage || "https://res.cloudinary.com/dvozhxxtl/image/upload/default_avatar.png"
+            }
             alt="User Avatar"
           />
         </div>
-        <button className="whitespace-nowrap p-2 border rounded-lg">Upload</button>
+        <label className="whitespace-nowrap p-2 border rounded-lg cursor-pointer">
+          Upload
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setSelectedImage(e.target.files[0])}
+            className="hidden"
+          />
+        </label>
       </div>
 
       <div>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function BenefitPrograms() {
     const [bookmarked, setBookmarked] = useState(false); 
+    const navigate = useNavigate();
   return (
     <div className='m-4'>
         <div className='border py-3 m-3'>
@@ -27,7 +29,12 @@ export default function BenefitPrograms() {
                     </svg>
                     </button>
                 </div>
-                <h2 className='font-bold text-[20px]'>Mentorship Initiative</h2>
+                <h2
+                    className='font-bold text-[20px] cursor-pointer'
+                    onClick={() => navigate('/BenefitProgramSub')}
+                >
+                    Mentorship Initiative
+                </h2>
                 <p>Connects women with experienced women leaders for guidance</p>
                 <p className='font-bold'>
                     <span className='bg-blue-50'>Eligible</span>
