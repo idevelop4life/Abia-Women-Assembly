@@ -16,6 +16,22 @@ export default function MyDashboard(userImage) {
   const options = ["Option 1", "Option 2", "Option 3"];
   console.log("userImage", userImage);
 
+  // Define event dates here (adjust as needed)
+  const eventDates = [
+    new Date('2025-07-23'),
+    new Date('2025-07-26'),
+    new Date('2025-08-05'),
+  ];
+
+  // Helper function to compare dates (ignoring time)
+  function isSameDay(date1, date2) {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  }
+
   return (
     <div className='mx-10 my-10'>
       <h1 className='font-bold text-2xl my-10'>Welcome, Grace!</h1>
@@ -88,6 +104,10 @@ export default function MyDashboard(userImage) {
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
                 inline
+                dayClassName={(date) => {
+                  const hasEvent = eventDates.some(eventDate => isSameDay(eventDate, date));
+                  return hasEvent ? 'event-day' : undefined;
+                }}
               />
             </div>
           )}
@@ -145,6 +165,24 @@ export default function MyDashboard(userImage) {
           </div>
         </div>
       </div>
+
+      {/* Add styles for event dots */}
+      <style>{`
+        .react-datepicker__day.event-day {
+          position: relative;
+        }
+        .react-datepicker__day.event-day::after {
+          content: '';
+          position: absolute;
+          bottom: 4px;
+          left: 50%;
+          transform: translateX(-50%);
+          height: 6px;
+          width: 6px;
+          background-color: red;
+          border-radius: 50%;
+        }
+      `}</style>
     </div>
   );
 }

@@ -22,6 +22,7 @@ import { MakeDonation } from './Component/MakeDonation/MakeDonation';
 import './App.css';
 import { EventDetail } from './Component/EventsDetail/EventDetail';
 import { BenefitProgramSub } from './Component/BenefitProgramSub/BenefitProgramSub';
+import { PaymentPage } from './Component/PaymentPage/PaymentPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -94,6 +95,11 @@ function App() {
             <Route
               path="/BenefitProgramSub"
               element={<BenefitProgramSub/>}/>
+            <Route 
+              path="/PaymentPage"
+              element={
+                isAuthenticated ? (<PaymentPage />) : (<Navigate to="/" replace />)
+                } />
             <Route path="/MakeDonation" element={<MakeDonation/>}/>
             <Route path="/MyDonations" element={<MyDonation />} />
             <Route path="/MyDashboard" element={<MyDashboard userImage={userImage}/>} />

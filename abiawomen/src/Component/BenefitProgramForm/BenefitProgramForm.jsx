@@ -43,7 +43,7 @@ export default function BenefitApplicationForm() {
   )
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-md space-y-6">
+    <form onSubmit={handleSubmit} className="">
       <h2 className="text-2xl font-bold mb-4">Benefit Application Form</h2>
 
       <div>
