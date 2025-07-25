@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import AWA1 from '../../assets/AWA 1.png';
-import { useNavigate } from 'react-router-dom';
-import Kite from '../../assets/kiteimage.png';
-import { Calendar } from 'lucide-react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { useState } from "react";
+import AWA1 from "../../assets/AWA 1.png";
+import { useNavigate } from "react-router-dom";
+import Kite from "../../assets/kiteimage.png";
+import { Calendar } from "lucide-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function MyDashboard(userImage) {
   const navigate = useNavigate();
@@ -18,9 +18,9 @@ export default function MyDashboard(userImage) {
 
   // Define event dates here (adjust as needed)
   const eventDates = [
-    new Date('2025-07-23'),
-    new Date('2025-07-26'),
-    new Date('2025-08-05'),
+    new Date("2025-07-23"),
+    new Date("2025-07-26"),
+    new Date("2025-08-05"),
   ];
 
   // Helper function to compare dates (ignoring time)
@@ -33,11 +33,11 @@ export default function MyDashboard(userImage) {
   }
 
   return (
-    <div className='mx-10 my-10'>
-      <h1 className='font-bold text-2xl my-10'>Welcome, Grace!</h1>
+    <div className="mx-10 my-10">
+      <h1 className="font-bold text-2xl my-10">Welcome, Grace!</h1>
 
-      <div className='flex flex-row gap-10 justify-center'>
-        <div className='flex items-center justify-center'>
+      <div className="flex flex-row gap-10 justify-center">
+        <div className="flex items-center justify-center">
           <img
             className="rounded-full border-4 w-40 h-40"
             src={userImage.userImage || "https://via.placeholder.com/150"}
@@ -45,8 +45,8 @@ export default function MyDashboard(userImage) {
           />
         </div>
 
-        <div className='flex flex-row items-start border px-6 py-0'>
-          <div className='my-10 p-3'>
+        <div className="flex flex-row items-start border px-6 py-0">
+          <div className="my-10 p-3">
             <p>Membership Details</p>
             <p>Grace Iheme</p>
             <p>grace.iheme@gmail.com</p>
@@ -73,25 +73,25 @@ export default function MyDashboard(userImage) {
         </div>
       </div>
 
-      <div className='flex flex-row justify-between my-5'>
-        <div className='flex flex-col w-[48%]'>
+      <div className="flex flex-row justify-between my-5">
+        <div className="flex flex-col w-[48%]">
           <button
-            className='w-full py-4 my-2 rounded-md text-white bg-red-700'
-            onClick={() => navigate('/UpdateProfile')}
+            className="w-full py-4 my-2 rounded-md text-white bg-red-700"
+            onClick={() => navigate("/UpdateProfile")}
           >
             Update Profile
           </button>
           <button
-            className='w-full py-4 bg-green-600 my-2 rounded-md text-white'
-            onClick={() => navigate('/BenefitPrograms')}
+            className="w-full py-4 bg-green-600 my-2 rounded-md text-white"
+            onClick={() => navigate("/BenefitPrograms")}
           >
             Benefit Program
           </button>
         </div>
 
-        <div className='flex flex-col w-[48%] relative'>
+        <div className="flex flex-col w-[48%] relative">
           <button
-            className='w-full p-4 bg-green-950 my-2 rounded-md text-white flex items-center justify-center gap-2'
+            className="w-full p-4 bg-green-950 my-2 rounded-md text-white flex items-center justify-center gap-2"
             onClick={() => setShowCalendar(!showCalendar)}
           >
             <Calendar size={20} />
@@ -99,22 +99,24 @@ export default function MyDashboard(userImage) {
           </button>
 
           {showCalendar && (
-            <div className='absolute top-[100%] mt-2 z-10'>
+            <div className="absolute top-[100%] mt-2 z-10">
               <DatePicker
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
                 inline
                 dayClassName={(date) => {
-                  const hasEvent = eventDates.some(eventDate => isSameDay(eventDate, date));
-                  return hasEvent ? 'event-day' : undefined;
+                  const hasEvent = eventDates.some((eventDate) =>
+                    isSameDay(eventDate, date),
+                  );
+                  return hasEvent ? "event-day" : undefined;
                 }}
               />
             </div>
           )}
 
           <button
-            className='w-full p-4 bg-yellow-500 my-2 rounded-md text-white'
-            onClick={() => navigate('/EmpowermentPrograms')}
+            className="w-full p-4 bg-yellow-500 my-2 rounded-md text-white"
+            onClick={() => navigate("/EmpowermentPrograms")}
           >
             Empowerment Program
           </button>
@@ -134,8 +136,8 @@ export default function MyDashboard(userImage) {
             {isOpen && (
               <div className="absolute right-0 mt-2 w-48 max-h-60 overflow-auto bg-white border border-gray-300 rounded shadow z-10">
                 {options
-                  .filter(option => option !== selectedOption)
-                  .map(option => (
+                  .filter((option) => option !== selectedOption)
+                  .map((option) => (
                     <div
                       key={option}
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"

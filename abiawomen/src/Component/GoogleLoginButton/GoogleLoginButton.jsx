@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // New (ESM-style)
+import React, { useEffect } from "react";
+import { jwtDecode } from "jwt-decode"; // New (ESM-style)
 
 export default function GoogleLoginButton({ onLoginSuccess }) {
   useEffect(() => {
     if (window.google) {
       window.google.accounts.id.initialize({
-        client_id: '717837057045-udbsa7ug4btka496a8lb9k214f6m6fqm.apps.googleusercontent.com',
+        client_id:
+          "717837057045-udbsa7ug4btka496a8lb9k214f6m6fqm.apps.googleusercontent.com",
         callback: handleCredentialResponse,
       });
       window.google.accounts.id.renderButton(
-        document.getElementById('googleSignInDiv'),
-        { theme: 'outline', size: 'large' }
+        document.getElementById("googleSignInDiv"),
+        { theme: "outline", size: "large" },
       );
     }
   }, []);
@@ -25,21 +26,21 @@ export default function GoogleLoginButton({ onLoginSuccess }) {
       last_name: data.family_name,
     };
 
-    const res = await fetch('http://localhost:9000/auth/google-login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("http://localhost:9000/auth/google-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(profile),
     });
     const result = await res.json();
 
     if (res.ok) {
-        if (typeof onLoginSuccess === 'function') {
+      if (typeof onLoginSuccess === "function") {
         onLoginSuccess(result);
-        } else {
-        console.warn('onLoginSuccess is not a function:', onLoginSuccess);
-        }
+      } else {
+        console.warn("onLoginSuccess is not a function:", onLoginSuccess);
+      }
     } else {
-      alert(result.error || 'Google login failed');
+      alert(result.error || "Google login failed");
     }
   };
 

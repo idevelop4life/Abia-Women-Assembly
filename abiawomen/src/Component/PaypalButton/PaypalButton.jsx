@@ -1,5 +1,5 @@
-import React from 'react';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import React from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const PayPalButton = () => {
   return (
@@ -8,11 +8,13 @@ const PayPalButton = () => {
         style={{ layout: "vertical" }}
         createOrder={(data, actions) => {
           return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: "10.00" // Amount to charge
-              }
-            }]
+            purchase_units: [
+              {
+                amount: {
+                  value: "10.00", // Amount to charge
+                },
+              },
+            ],
           });
         }}
         onApprove={async (data, actions) => {

@@ -1,36 +1,36 @@
-import React, { useRef, useState } from 'react'
-import { UploadCloud } from 'lucide-react'
+import React, { useRef, useState } from "react";
+import { UploadCloud } from "lucide-react";
 
 export default function BenefitApplicationForm() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    identityType: '',
-    benefitType: '',
+    firstName: "",
+    lastName: "",
+    identityType: "",
+    benefitType: "",
     willingness: false,
     applicationComplete: false,
-  })
+  });
 
-  const idFileRef = useRef(null)
-  const residenceFileRef = useRef(null)
-  const guardianFileRef = useRef(null)
+  const idFileRef = useRef(null);
+  const residenceFileRef = useRef(null);
+  const guardianFileRef = useRef(null);
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
-  }
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   const handleFileChange = (e) => {
-    console.log(`${e.target.name} selected:`, e.target.files[0])
-  }
+    console.log(`${e.target.name} selected:`, e.target.files[0]);
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
-  }
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+  };
 
   const UploadBox = ({ onClick, label }) => (
     <div
@@ -40,7 +40,7 @@ export default function BenefitApplicationForm() {
       <UploadCloud className="w-6 h-6 text-gray-600" />
       <span>{label}</span>
     </div>
-  )
+  );
 
   return (
     <form onSubmit={handleSubmit} className="">
@@ -84,15 +84,37 @@ export default function BenefitApplicationForm() {
       </div>
 
       <div>
-        <label className="block font-medium mb-1">Upload Proof of Identity</label>
-        <UploadBox onClick={() => idFileRef.current.click()} label="Click to upload identity file" />
-        <input type="file" name="identityFile" ref={idFileRef} onChange={handleFileChange} className="hidden" />
+        <label className="block font-medium mb-1">
+          Upload Proof of Identity
+        </label>
+        <UploadBox
+          onClick={() => idFileRef.current.click()}
+          label="Click to upload identity file"
+        />
+        <input
+          type="file"
+          name="identityFile"
+          ref={idFileRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
       </div>
 
       <div>
-        <label className="block font-medium mb-1">Upload Proof of Residence</label>
-        <UploadBox onClick={() => residenceFileRef.current.click()} label="Click to upload residence file" />
-        <input type="file" name="residenceFile" ref={residenceFileRef} onChange={handleFileChange} className="hidden" />
+        <label className="block font-medium mb-1">
+          Upload Proof of Residence
+        </label>
+        <UploadBox
+          onClick={() => residenceFileRef.current.click()}
+          label="Click to upload residence file"
+        />
+        <input
+          type="file"
+          name="residenceFile"
+          ref={residenceFileRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
       </div>
 
       <div>
@@ -111,27 +133,50 @@ export default function BenefitApplicationForm() {
       </div>
 
       <div className="flex items-center">
-        <input type="checkbox" name="willingness" checked={formData.willingness} onChange={handleInputChange} className="mr-2" />
+        <input
+          type="checkbox"
+          name="willingness"
+          checked={formData.willingness}
+          onChange={handleInputChange}
+          className="mr-2"
+        />
         <label>Willing to Participate</label>
       </div>
 
       <div>
-        <label className="block font-medium mb-1">Guardian Consent (if under 18)</label>
-        <UploadBox onClick={() => guardianFileRef.current.click()} label="Click to upload guardian consent" />
-        <input type="file" name="guardianConsent" ref={guardianFileRef} onChange={handleFileChange} className="hidden" />
+        <label className="block font-medium mb-1">
+          Guardian Consent (if under 18)
+        </label>
+        <UploadBox
+          onClick={() => guardianFileRef.current.click()}
+          label="Click to upload guardian consent"
+        />
+        <input
+          type="file"
+          name="guardianConsent"
+          ref={guardianFileRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
       </div>
 
       <div className="flex items-center">
-        <input type="checkbox" name="applicationComplete" checked={formData.applicationComplete} onChange={handleInputChange} className="mr-2" />
+        <input
+          type="checkbox"
+          name="applicationComplete"
+          checked={formData.applicationComplete}
+          onChange={handleInputChange}
+          className="mr-2"
+        />
         <label>Application form complete</label>
       </div>
 
       <button
         type="submit"
-        className="w-full bg-green-700 hover:bg-green-800 text-white py-3 px-4 rounded-md font-medium"
+        className="w-full bg-green-700 hover:bg-green-800 text-white py-3 px-4 rounded-md font-medium my-6"
       >
         Submit Application
       </button>
     </form>
-  )
+  );
 }

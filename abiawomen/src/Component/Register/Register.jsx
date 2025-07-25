@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import { Country, State } from 'country-state-city';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import SocialButton from '../SocialButton/SocialButton';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Country, State } from "country-state-city";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import SocialButton from "../SocialButton/SocialButton";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    last_name: '',
-    first_name: '',
-    nationality: 'NG',
-    state_city: '',
-    local_government: '',
-    gender: '',
-    primary_phone: '',
-    email: '',
-    additional_contact_info: '',
-    marital_status: '',
-    date_of_birth: '',
-    occupation: '',
-    next_of_kin_name: '',
-    next_of_kin_phone: '',
-    next_of_kin_occupation: '',
-    relationship_with_next_of_kin: '',
-    password: '',
-    confirm_password: '',
+    last_name: "",
+    first_name: "",
+    nationality: "NG",
+    state_city: "",
+    local_government: "",
+    gender: "",
+    primary_phone: "",
+    email: "",
+    additional_contact_info: "",
+    marital_status: "",
+    date_of_birth: "",
+    occupation: "",
+    next_of_kin_name: "",
+    next_of_kin_phone: "",
+    next_of_kin_occupation: "",
+    relationship_with_next_of_kin: "",
+    password: "",
+    confirm_password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -51,33 +51,33 @@ export default function Register() {
     setError(null);
 
     if (formData.password !== formData.confirm_password) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     try {
-      const res = await fetch('http://localhost:9000/auth/register', {
-        method: 'POST',
+      const res = await fetch("http://localhost:9000/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
-      console.log(data)
+      console.log(data);
 
       if (!res.ok) {
-        setError(data.error || 'Something went wrong');
+        setError(data.error || "Something went wrong");
         return;
       }
 
-    localStorage.setItem('token', data.token);
-    alert('Registration successful!');
-    navigate("/"); // 👈 lowercase, correct function
+      localStorage.setItem("token", data.token);
+      alert("Registration successful!");
+      navigate("/"); // 👈 lowercase, correct function
       // Optionally redirect or clear form here
     } catch (err) {
-      setError('Network error');
+      setError("Network error");
     }
   };
 
@@ -182,7 +182,7 @@ export default function Register() {
                 value="Male"
                 className="form-radio"
                 onChange={handleChange}
-                checked={formData.gender === 'Male'}
+                checked={formData.gender === "Male"}
                 required
               />
               <span className="ml-2">Male</span>
@@ -195,7 +195,7 @@ export default function Register() {
                 value="Female"
                 className="form-radio"
                 onChange={handleChange}
-                checked={formData.gender === 'Female'}
+                checked={formData.gender === "Female"}
               />
               <span className="ml-2">Female</span>
             </label>
@@ -250,7 +250,7 @@ export default function Register() {
                 value="Single"
                 className="form-radio"
                 onChange={handleChange}
-                checked={formData.marital_status === 'Single'}
+                checked={formData.marital_status === "Single"}
                 required
               />
               <span className="ml-2">Single</span>
@@ -263,7 +263,7 @@ export default function Register() {
                 value="Married"
                 className="form-radio"
                 onChange={handleChange}
-                checked={formData.marital_status === 'Married'}
+                checked={formData.marital_status === "Married"}
               />
               <span className="ml-2">Married</span>
             </label>
@@ -275,7 +275,7 @@ export default function Register() {
                 value="Divorced"
                 className="form-radio"
                 onChange={handleChange}
-                checked={formData.marital_status === 'Divorced'}
+                checked={formData.marital_status === "Divorced"}
               />
               <span className="ml-2">Divorced</span>
             </label>
@@ -360,7 +360,7 @@ export default function Register() {
           <h2 className="my-5">Password</h2>
           <div className="relative">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               name="password"
               className="border border-gray-300 rounded px-4 py-2 w-full"
               value={formData.password}
@@ -382,7 +382,7 @@ export default function Register() {
           <h2 className="my-5">Confirm Password</h2>
           <div className="relative">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               name="confirm_password"
               className="border border-gray-300 rounded px-4 py-2 w-full"
               value={formData.confirm_password}
@@ -412,7 +412,7 @@ export default function Register() {
         </div>
 
         <p className="mt-5">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link
             to="/signin"
             className="text-[#4a713d] cursor-pointer hover:text-green-900"

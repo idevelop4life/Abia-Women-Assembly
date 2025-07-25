@@ -1,27 +1,37 @@
-import React, { useEffect } from 'react';
-import logo from '../../assets/Logo.png';
-import UserDropdown from '../UserDropdown/UserDropdown';
-import { Link } from 'react-router-dom';
-import EventDropDown from '../EventDropDown/EventDropDown';
+import React, { useEffect } from "react";
+import logo from "../../assets/Logo.png";
+import UserDropdown from "../UserDropdown/UserDropdown";
+import { Link } from "react-router-dom";
+import EventDropDown from "../EventDropDown/EventDropDown";
 
 function SignedInFeature({ isSignedIn, onLogout, userImage }) {
   if (isSignedIn) {
-    return <UserDropdown onLogout={onLogout} userImage={userImage}/>;
+    return <UserDropdown onLogout={onLogout} userImage={userImage} />;
   }
   return (
     <button className="md:hidden text-gray-800 hover:text-blue-500">
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M4 6h16M4 12h16M4 18h16"
+        />
       </svg>
     </button>
   );
 }
 
-export default function Navbar({userImage, isAuthenticated}) {
+export default function Navbar({ userImage, isAuthenticated }) {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       setIsSignedIn(true);
     }
@@ -41,18 +51,27 @@ export default function Navbar({userImage, isAuthenticated}) {
 
           <ul className="hidden md:flex space-x-6">
             <li>
-              <a href="#" className="text-white hover:text-blue-500 transition-colors">
+              <a
+                href="#"
+                className="text-white hover:text-blue-500 transition-colors"
+              >
                 <Link to="/">Home</Link>
               </a>
             </li>
             <li>
-              <a href="#" className="text-white hover:text-blue-500 transition-colors">
+              <a
+                href="#"
+                className="text-white hover:text-blue-500 transition-colors"
+              >
                 <Link to="/About">About</Link>
               </a>
             </li>
-            <EventDropDown isAuthenticated={isAuthenticated}/>
+            <EventDropDown isAuthenticated={isAuthenticated} />
             <li>
-              <a href="#" className="text-white hover:text-blue-500 transition-colors">
+              <a
+                href="#"
+                className="text-white hover:text-blue-500 transition-colors"
+              >
                 <Link to="/Contact">Contact</Link>
               </a>
             </li>
@@ -65,7 +84,11 @@ export default function Navbar({userImage, isAuthenticated}) {
               <Link to="/Register">Sign In</Link>
             </button>
           )}
-          <SignedInFeature isSignedIn={isSignedIn} onLogout={handleLogout} userImage={userImage}/>
+          <SignedInFeature
+            isSignedIn={isSignedIn}
+            onLogout={handleLogout}
+            userImage={userImage}
+          />
         </div>
       </nav>
     </div>

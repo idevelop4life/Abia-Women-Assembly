@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-export default function EventDropDown({isAuthenticated}) {
+export default function EventDropDown({ isAuthenticated }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -12,8 +12,8 @@ export default function EventDropDown({isAuthenticated}) {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -25,19 +25,22 @@ export default function EventDropDown({isAuthenticated}) {
         aria-expanded={isOpen}
       >
         <Link to="/UpcomingEvent">Events</Link>
-        
       </button>
 
       {isOpen && isAuthenticated && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-          <a href="/UpcomingEvent" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <a
+            href="/UpcomingEvent"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
             Upcoming Events
           </a>
-          <a href="/EventsGallery" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          <Link to="/EventsGallery">Events Gallery</Link>
-            
+          <a
+            href="/EventsGallery"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            <Link to="/EventsGallery">Events Gallery</Link>
           </a>
-          
         </div>
       )}
     </div>

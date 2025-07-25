@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 export default function UpdateProfile({ userImage, userInfo }) {
   const [formData, setFormData] = useState({
-    full_name: '',
-    email: '',
-    phone: '',
-    country: '',
-    state: '',
-    password: '',
-    confirmPassword: '',
+    full_name: "",
+    email: "",
+    phone: "",
+    country: "",
+    state: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -16,43 +16,44 @@ export default function UpdateProfile({ userImage, userInfo }) {
   useEffect(() => {
     async function fetchUserInfo() {
       try {
-        const response = await fetch('http://localhost:9000/auth/edit', {
-          method: 'PATCH',
+        const response = await fetch("http://localhost:9000/auth/edit", {
+          method: "PATCH",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             token: localStorage.token,
           },
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch user info');
+          throw new Error("Failed to fetch user info");
         }
 
         const data = await response.json();
 
         setFormData({
-          full_name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
-          email: data.email || '',
-          phone: data.primary_phone || '',
-          country: data.nationality || '',
-          state: data.state_city || '',
-          password: '',
-          confirmPassword: '',
+          full_name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+          email: data.email || "",
+          phone: data.primary_phone || "",
+          country: data.nationality || "",
+          state: data.state_city || "",
+          password: "",
+          confirmPassword: "",
         });
       } catch (error) {
-        console.error('Error fetching user info:', error);
+        console.error("Error fetching user info:", error);
       }
     }
 
     if (userInfo) {
       setFormData({
-        full_name: `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim(),
-        email: userInfo.email || '',
-        phone: userInfo.primary_phone || '',
-        country: userInfo.nationality || '',
-        state: userInfo.state_city || '',
-        password: '',
-        confirmPassword: '',
+        full_name:
+          `${userInfo.first_name || ""} ${userInfo.last_name || ""}`.trim(),
+        email: userInfo.email || "",
+        phone: userInfo.primary_phone || "",
+        country: userInfo.nationality || "",
+        state: userInfo.state_city || "",
+        password: "",
+        confirmPassword: "",
       });
     } else {
       fetchUserInfo();
@@ -70,22 +71,22 @@ export default function UpdateProfile({ userImage, userInfo }) {
       return;
     }
 
-    const [first_name, ...rest] = formData.full_name.trim().split(' ');
-    const last_name = rest.join(' ');
+    const [first_name, ...rest] = formData.full_name.trim().split(" ");
+    const last_name = rest.join(" ");
 
     try {
       const data = new FormData();
-      data.append('first_name', first_name);
-      data.append('last_name', last_name);
-      data.append('email', formData.email);
-      data.append('primary_phone', formData.phone);
-      data.append('nationality', formData.country);
-      data.append('state_city', formData.state);
-      if (formData.password) data.append('password', formData.password);
-      if (selectedImage) data.append('profile_picture', selectedImage);
+      data.append("first_name", first_name);
+      data.append("last_name", last_name);
+      data.append("email", formData.email);
+      data.append("primary_phone", formData.phone);
+      data.append("nationality", formData.country);
+      data.append("state_city", formData.state);
+      if (formData.password) data.append("password", formData.password);
+      if (selectedImage) data.append("profile_picture", selectedImage);
 
-      const response = await fetch('http://localhost:9000/auth/edit', {
-        method: 'PATCH',
+      const response = await fetch("http://localhost:9000/auth/edit", {
+        method: "PATCH",
         headers: {
           token: localStorage.token,
         },
@@ -93,14 +94,14 @@ export default function UpdateProfile({ userImage, userInfo }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update profile');
+        throw new Error("Failed to update profile");
       }
 
       const result = await response.json();
-      console.log('Updated successfully:', result);
+      console.log("Updated successfully:", result);
       alert("Profile updated successfully!");
     } catch (error) {
-      console.error('Update error:', error);
+      console.error("Update error:", error);
       alert("Failed to update profile.");
     }
   };
@@ -114,7 +115,8 @@ export default function UpdateProfile({ userImage, userInfo }) {
             src={
               selectedImage
                 ? URL.createObjectURL(selectedImage)
-                : userImage || "https://res.cloudinary.com/dvozhxxtl/image/upload/default_avatar.png"
+                : userImage ||
+                  "https://res.cloudinary.com/dvozhxxtl/image/upload/default_avatar.png"
             }
             alt="User Avatar"
           />
@@ -212,7 +214,9 @@ export default function UpdateProfile({ userImage, userInfo }) {
         </div>
 
         <div className="my-5 flex justify-between">
-          <button className="border p-4 mx-3 bg-red-900 text-white rounded-lg">CANCEL</button>
+          <button className="border p-4 mx-3 bg-red-900 text-white rounded-lg">
+            CANCEL
+          </button>
           <button
             className="border p-4 mx-3 bg-green-800 text-white rounded-lg"
             onClick={handleSave}

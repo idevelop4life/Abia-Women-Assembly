@@ -1,21 +1,20 @@
-import { useState } from 'react';
-import { FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
-import GoogleLoginButton from '../GoogleLoginButton/GoogleLoginButton';
+import { useState } from "react";
+import { FaGoogle, FaFacebookF, FaApple } from "react-icons/fa";
+import GoogleLoginButton from "../GoogleLoginButton/GoogleLoginButton";
 // import FacebookLogin from 'react-facebook-login';
 
 export default function SocialButtons() {
   const [login, setLogin] = useState(false);
   const [data, setData] = useState({});
-  const [picture, setPicture] = useState('');
+  const [picture, setPicture] = useState("");
 
-   const handleFacebookCallback = (response) => {
-  // if (response?.status === "unknown") {
-  //   console.error('Sorry!', 'Something went wrong with facebook Login.');
-  //   return;
-  // }
-  // console.log(response);
-
-  /*
+  const handleFacebookCallback = (response) => {
+    // if (response?.status === "unknown") {
+    //   console.error('Sorry!', 'Something went wrong with facebook Login.');
+    //   return;
+    // }
+    // console.log(response);
+    /*
   Sample response object you will get:
   {
     "name": "Syed M Ahmad",
@@ -37,7 +36,7 @@ export default function SocialButtons() {
     "data_access_expiration_time": 1719914458
   }
   */
-}
+  };
 
   // const responseFacebook = (response) => {
   //   console.log(response);
@@ -53,9 +52,9 @@ export default function SocialButtons() {
   // };
 
   const handleGoogleLogin = (userData) => {
-    console.log('User logged in via Google', userData);
-    localStorage.setItem('token', userData.token);
-    window.location.href = '/'; // Change this to user profile route
+    console.log("User logged in via Google", userData);
+    localStorage.setItem("token", userData.token);
+    window.location.href = "/"; // Change this to user profile route
   };
 
   return (
@@ -80,12 +79,13 @@ export default function SocialButtons() {
           )}
         /> */}
 
-        <FacebookLogin 
-      buttonStyle={{padding:"6px"}}  
-      appId="579499218551312"  // nós need to get this from facebook developer console by setting the app.
-      autoLoad={false}  
-      fields="name,email,picture"  
-      callback={handleFacebookCallback}/>
+        <FacebookLogin
+          buttonStyle={{ padding: "6px" }}
+          appId="579499218551312" // nós need to get this from facebook developer console by setting the app.
+          autoLoad={false}
+          fields="name,email,picture"
+          callback={handleFacebookCallback}
+        />
 
         <button
           aria-label="Sign in with Apple"
@@ -98,7 +98,13 @@ export default function SocialButtons() {
       {/* Show user info after login */}
       {login && (
         <div className="mt-4 text-center">
-          {picture && <img src={picture} alt="Profile" className="mx-auto rounded-full w-16 h-16" />}
+          {picture && (
+            <img
+              src={picture}
+              alt="Profile"
+              className="mx-auto rounded-full w-16 h-16"
+            />
+          )}
           <p>{data.name}</p>
           <p>{data.email}</p>
         </div>

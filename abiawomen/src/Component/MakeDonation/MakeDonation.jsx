@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const MakeDonation = () => {
   const navigate = useNavigate();
-  const [currency, setCurrency] = useState('');
-  const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState("");
+  const [amount, setAmount] = useState("");
 
   const handleDonate = () => {
-    if (currency === 'ngn') {
-      alert('Please transfer to account number: 1234567890 (Access Bank)');
+    if (currency === "ngn") {
+      alert("Please transfer to account number: 1234567890 (Access Bank)");
     } else {
       alert(`Donating ${amount} via ${currency}`);
     }
-    navigate('/PaymentPage', { state: { amount: amount, currency: currency } });
-
+    navigate("/PaymentPage", { state: { amount: amount, currency: currency } });
   };
 
   return (
     <div className="max-w-sm mx-auto mt-10 p-4 space-y-6">
       <div>
-        <label htmlFor="currency" className="block text-gray-700 mb-2 font-semibold">
+        <label
+          htmlFor="currency"
+          className="block text-gray-700 mb-2 font-semibold"
+        >
           Currency
         </label>
         <select
@@ -38,10 +39,13 @@ export const MakeDonation = () => {
         </select>
       </div>
 
-      {currency !== 'ngn' && (
+      {currency !== "ngn" && (
         <>
           <div>
-            <label htmlFor="amount" className="block text-gray-700 mb-2 font-semibold">
+            <label
+              htmlFor="amount"
+              className="block text-gray-700 mb-2 font-semibold"
+            >
               Amount
             </label>
             <input
@@ -53,7 +57,7 @@ export const MakeDonation = () => {
               className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
-{/* 
+          {/* 
           <div>
             <label htmlFor="method" className="block text-gray-700 mb-2 font-semibold">
               Payment Method
@@ -73,9 +77,11 @@ export const MakeDonation = () => {
         </>
       )}
 
-      {currency === 'ngn' && (
+      {currency === "ngn" && (
         <div className="bg-gray-100 p-4 rounded text-center">
-          <p className="font-semibold text-gray-700">Please transfer your donation to:</p>
+          <p className="font-semibold text-gray-700">
+            Please transfer your donation to:
+          </p>
           <p className="text-lg font-bold mt-2">1234567890</p>
           <p className="text-sm text-gray-600">Access Bank</p>
         </div>
