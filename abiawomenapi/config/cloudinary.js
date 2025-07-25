@@ -1,30 +1,29 @@
 // config/cloudinary.js
 // At the top of cloudinary.js
-const path = require('path');
+const path = require("path");
 
-const cloudinary = require('cloudinary').v2;
-require('dotenv').config();
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
 
 async function uploadDefaultAvatar() {
   try {
     const result = await cloudinary.uploader.upload(
-      path.join(__dirname, './default_avatar.jpg'),
+      path.join(__dirname, "./default_avatar.jpg"),
       {
-        public_id: 'default_avatar',
+        public_id: "default_avatar",
         overwrite: true, // in case it already exists
-        folder: '', // or 'default_avatar' if you want to use a subfolder
-      }
+        folder: "", // or 'default_avatar' if you want to use a subfolder
+      },
     );
-    console.log('Uploaded:', result.secure_url);
+    console.log("Uploaded:", result.secure_url);
   } catch (err) {
-    console.error('Upload failed:', err);
+    console.error("Upload failed:", err);
   }
 }
 
