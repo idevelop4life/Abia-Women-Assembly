@@ -79,13 +79,13 @@ export default function SocialButtons() {
           )}
         /> */}
 
-        <FacebookLogin
+        {/* <FacebookLogin
           buttonStyle={{ padding: "6px" }}
           appId="579499218551312" // nós need to get this from facebook developer console by setting the app.
           autoLoad={false}
           fields="name,email,picture"
           callback={handleFacebookCallback}
-        />
+        /> */}
 
         <button
           aria-label="Sign in with Apple"

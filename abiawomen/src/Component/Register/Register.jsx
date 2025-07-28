@@ -400,7 +400,7 @@ export default function Register() {
         </div>
 
         {/* Social Buttons */}
-        {/* <SocialButton onFacebookLoginSuccess={handleFacebookData} /> */}
+        <SocialButton/>
 
         <div className="flex justify-center mt-5">
           <button

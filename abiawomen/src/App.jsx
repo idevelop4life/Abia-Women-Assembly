@@ -25,36 +25,84 @@ import { BenefitProgramSub } from "./Component/BenefitProgramSub/BenefitProgramS
 import { PaymentPage } from "./Component/PaymentPage/PaymentPage";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [userImage, setUserImage] = useState(null);
-  const [userInfo, setUserInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
 
   const checkAuthenticated = async () => {
+    console.log("🔍 Starting authentication check...");
+    setIsLoading(true);
+    
     try {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        return;
+      }
+
       const res = await fetch("http://localhost:9000/auth/verify", {
         method: "GET",
-        headers: { token: localStorage.token },
+        headers: { 
+          "Content-Type": "application/json",
+          token: token 
+        },
       });
 
-      const parseRes = await res.json();
-      console.log("parseRes", parseRes);
-
-      setUserImage(parseRes.user.profile_picture);
-      setUserInfo(parseRes.user);
-      console.log("profile pic", parseRes.user.profile_picture);
-      if (parseRes.verified === true) {
-        console.log("true");
-        await setIsAuthenticated(true);
-      } else {
-        console.log("false");
-        await setIsAuthenticated(false);
+      
+      if (!res.ok) {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        return;
       }
-    } catch (err) {}
+
+      const parseRes = await res.json();
+
+      if (parseRes.user) {
+        setUserImage(parseRes.user.profile_picture || null);
+        setUserInfo(parseRes.user);
+      }
+      
+      const isVerified = parseRes.verified === true;
+      
+      setIsAuthenticated(isVerified);
+      setIsLoading(false);
+      
+    } catch (err) {
+      setIsAuthenticated(false);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     checkAuthenticated();
   }, []);
+
+  useEffect(() => {
+    console.log("🔄 Authentication state changed:", isAuthenticated);
+  }, [isAuthenticated]);
+
+  const ProtectedRoute = ({ children, routeName }) => {
+    
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center min-h-screen">
+          <div>Loading...</div>
+        </div>
+      );
+    }
+    
+    if (!isAuthenticated) {
+      return <Navigate to="/" replace />;
+    }
+    
+    return children;
+  };
+
+  console.log("🖥️ App render - Auth state:", { isAuthenticated, isLoading });
+
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
@@ -79,87 +127,83 @@ function App() {
             <Route
               path="/UpcomingEvent"
               element={
-                isAuthenticated ? (
+                <ProtectedRoute routeName="UpcomingEvent">
                   <UpcomingEvent />
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                </ProtectedRoute>
               }
             />
             <Route
               path="/EventsGallery"
               element={
-                isAuthenticated ? (
+                <ProtectedRoute routeName="EventsGallery">
                   <EventsGallery />
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                </ProtectedRoute>
               }
             />
             <Route
               path="/EventDetail/:id"
               element={
-                isAuthenticated ? <EventDetail /> : <Navigate to="/" replace />
+                <ProtectedRoute routeName="EventDetail">
+                  <EventDetail />
+                </ProtectedRoute>
               }
             />
             <Route path="/BenefitProgramSub" element={<BenefitProgramSub />} />
             <Route
               path="/PaymentPage"
               element={
-                isAuthenticated ? <PaymentPage /> : <Navigate to="/" replace />
+                <ProtectedRoute routeName="PaymentPage">
+                  <PaymentPage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/MakeDonation"
               element={
-                isAuthenticated ? <MakeDonation /> : <Navigate to="/" replace />
+                <ProtectedRoute routeName="MakeDonation">
+                  <MakeDonation />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/MyDonations"
               element={
-                isAuthenticated ? <MyDonation /> : <Navigate to="/" replace />
+                <ProtectedRoute routeName="MyDonations">
+                  <MyDonation />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/MyDashboard"
               element={
-                isAuthenticated ? (
+                <ProtectedRoute routeName="MyDashboard">
                   <MyDashboard userImage={userImage} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                </ProtectedRoute>
               }
             />
             <Route
               path="/UpdateProfile"
               element={
-                isAuthenticated ? (
+                <ProtectedRoute routeName="UpdateProfile">
                   <UpdateProfile userImage={userImage} userInfo={userInfo} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                </ProtectedRoute>
               }
             />
 
             <Route
               path="/BenefitPrograms"
               element={
-                isAuthenticated ? (
+                <ProtectedRoute routeName="BenefitPrograms">
                   <BenefitPrograms />
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                </ProtectedRoute>
               }
             />
             <Route
               path="/EmpowermentPrograms"
               element={
-                isAuthenticated ? (
+                <ProtectedRoute routeName="EmpowermentPrograms">
                   <EmpowermentPrograms />
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                </ProtectedRoute>
               }
             />
 

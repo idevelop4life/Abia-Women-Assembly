@@ -1,32 +1,40 @@
-import js from "@eslint/js";
-import globals from "globals";
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
-  { ignores: ["dist"] },
+  { ignores: ['dist'] },
   {
-    files: ["**/*.{js,jsx}"],
+    files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
         ...globals.browser,
-        ...globals.node, // includes require, module, process, __dirname
+        process: 'readonly',       // <-- Add this line to declare `process`
       },
       parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
+        ecmaVersion: 'latest',
+        ecmaFeatures: { jsx: true },
+        sourceType: 'module',
       },
     },
     env: {
       browser: true,
-      node: true,
+      node: true,                  // <-- Add this line to enable Node.js globals like `process`
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
     },
     rules: {
-      ...js.configs.recommended.rules, // base recommended rules
-      semi: ["error", "always"], // example: force semicolons
-      quotes: ["error", "single"], // example: force single quotes
-      "no-unused-vars": ["warn"], // warn instead of error for unused vars
-      indent: ["error", 2], // 2 spaces indentation
-      "no-console": "off", // allow console logs
+      ...js.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
     },
   },
 ];
