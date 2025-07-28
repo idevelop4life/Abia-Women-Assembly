@@ -21,5 +21,4 @@ app.use("/events", require("./routes/events.js"));
 app.use("/donations", require("./routes/donations.js"));
 
 app.listen(PORT, () => {
-  console.log(`Server listening on the port ${PORT}`);
 });

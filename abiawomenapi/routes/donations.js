@@ -36,9 +36,7 @@ router.get("/", async (req, res) => {
 
 router.get("/me", authorization, async (req, res) => {
   try {
-    console.log("this", req.user);
     const userid = req.user.id;
-    console.log(userid);
 
     const result = await pool.query(
       "SELECT * FROM donations WHERE member_id = $1 ORDER BY donation_date DESC",

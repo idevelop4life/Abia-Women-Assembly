@@ -3,3 +3,4 @@
 .env*
 *.sql
 test.js
+node_modules/

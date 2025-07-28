@@ -22,7 +22,6 @@ router.get("/", (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  console.log("Registration endpoint hit");
 
   try {
     const {
@@ -67,7 +66,6 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    console.log("Received registration request:", req.body);
 
     // Hash password
     const saltRounds = 10;
@@ -193,7 +191,6 @@ router.post("/login", async (req, res) => {
 
 router.post("/google-login", async (req, res) => {
   const { google_id, email, first_name, last_name } = req.body;
-  console.log(req.body);
 
   if (!google_id) {
     return res.status(400).json({ error: "google_id is required" });
@@ -220,11 +217,21 @@ router.post("/google-login", async (req, res) => {
         }
       }
 
+      const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME;
+      const defaultProfilePicture = `https://res.cloudinary.com/${cloudinaryCloudName}/image/upload/default_avatar.png`;
+
       const result = await pool.query(
-        `INSERT INTO members (google_id, email, first_name, last_name, profile_complete, member_type)
-         VALUES ($1, $2, $3, $4, false, 'member')
-         RETURNING *`,
-        [google_id, email, first_name, last_name],
+        `INSERT INTO members (
+          google_id,
+          email,
+          first_name,
+          last_name,
+          profile_complete,
+          member_type,
+          profile_picture
+        ) VALUES ($1, $2, $3, $4, false, 'member', $5)
+        RETURNING *`,
+        [google_id, email, first_name, last_name, defaultProfilePicture],
       );
 
       user = result.rows[0];
@@ -237,7 +244,7 @@ router.post("/google-login", async (req, res) => {
         existingUser.rows.length > 0 ? "User exists" : "New user created",
       profile_complete: user.profile_complete,
       member_id: user.id,
-      token, // send token here
+      token,
     });
   } catch (error) {
     console.error("Error during Google login:", error);
@@ -290,9 +297,7 @@ router.post("/facebook", async (req, res) => {
 });
 router.get("/verify", authorization, async (req, res) => {
   try {
-    console.log("req", req.user);
-    const userId = req.user.id;
-
+    const userId = req.user.user.id;
     const result = await pool.query(
       `SELECT first_name, last_name, email, primary_phone, nationality, state_city, profile_picture 
        FROM members 
@@ -322,7 +327,6 @@ router.patch(
   upload.single("profile_picture"),
   async (req, res) => {
     try {
-      console.log("req.file.recent", req.user.id);
       const userId = req.user.id;
       const {
         first_name,

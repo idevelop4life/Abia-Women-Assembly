@@ -21,7 +21,6 @@ async function uploadDefaultAvatar() {
         folder: "", // or 'default_avatar' if you want to use a subfolder
       },
     );
-    console.log("Uploaded:", result.secure_url);
   } catch (err) {
     console.error("Upload failed:", err);
   }
