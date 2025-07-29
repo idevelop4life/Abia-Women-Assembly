@@ -101,7 +101,6 @@ function App() {
     return children;
   };
 
-  console.log("🖥️ App render - Auth state:", { isAuthenticated, isLoading });
 
   return (
     <BrowserRouter>
