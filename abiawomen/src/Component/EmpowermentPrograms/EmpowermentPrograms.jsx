@@ -2,9 +2,13 @@ import React from "react";
 import e1 from "../../assets/e 1.png";
 import e2 from "../../assets/e 2.png";
 import e3 from "../../assets/e 3.png";
+import { EmpowermentProgramApp } from "../EmpowermentProgramApp/EmpowermentProgramApp";
+import { useNavigate } from "react-router-dom";
 
 export default function EmpowermentPrograms() {
+  const navigate = useNavigate();
   return (
+
     <div>
       <div className="px-3">
         <h1 className="text-5xl font-bold text-green-900 mb-4">
@@ -22,7 +26,7 @@ export default function EmpowermentPrograms() {
             </div>
           </div>
           <div>
-            <button className="border p-2 m-3 bg-[#E5AB19] text-white rounded-lg">
+            <button className="border p-2 m-3 bg-[#E5AB19] text-white rounded-lg" onClick={() => navigate('/empowerment-program-app')}>
               Apply
             </button>
           </div>

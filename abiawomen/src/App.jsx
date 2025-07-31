@@ -23,6 +23,7 @@ import "./App.css";
 import { EventDetail } from "./Component/EventsDetail/EventDetail";
 import { BenefitProgramSub } from "./Component/BenefitProgramSub/BenefitProgramSub";
 import { PaymentPage } from "./Component/PaymentPage/PaymentPage";
+import { EmpowermentProgramApp } from "./Component/EmpowermentProgramApp/EmpowermentProgramApp";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -205,7 +206,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            <Route
+              path="/empowerment-program-app"
+              element={
+                <ProtectedRoute routeName="EmpowermentProgramApp">
+                  <EmpowermentProgramApp />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/Register" element={<Register />} />
             <Route path="/LogIn" element={<Login />} />
           </Routes>

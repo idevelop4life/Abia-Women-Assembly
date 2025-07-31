@@ -64,7 +64,10 @@ export default function BenefitPrograms() {
               </svg>
             </button>
           </div>
-          <h2 className="font-bold text-[20px]">Maternal Care Assistance</h2>
+          <h2
+            className="font-bold text-[20px] cursor-pointer"
+            onClick={() => navigate("/BenefitProgramSub")}
+          >Maternal Care Assistance</h2>
           <p>Access to prenatal and postnatal healthcare services</p>
           <p className="font-bold">
             <span className="bg-blue-50">Eligible</span>
