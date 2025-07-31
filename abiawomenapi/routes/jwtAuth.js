@@ -297,6 +297,7 @@ router.post("/facebook", async (req, res) => {
 });
 router.get("/verify", authorization, async (req, res) => {
   try {
+    console.error("Verifying user:", req.user);
     const userId = req.user?.user?.id || req.user?.id;
 
 

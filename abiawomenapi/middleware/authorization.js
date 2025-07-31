@@ -4,7 +4,9 @@ require("dotenv").config();
 //this middleware will on continue on if the token is inside the local storage
 
 module.exports = function (req, res, next) {
+  console.error("Authorization middleware invoked");
   const token = req.header("token");
+  console.error("Authorization token received:", token);
 
   if (token === undefined) {
     return res.status(403).json({ msg: "authorization denied, this not work" });
