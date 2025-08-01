@@ -60,6 +60,7 @@ function App() {
       }
 
       const parseRes = await res.json();
+      console.log("🔍 Authentication response:", parseRes);
 
       if (parseRes.user) {
         setUserImage(parseRes.user.profile_picture || null);
@@ -101,6 +102,8 @@ function App() {
     
     return children;
   };
+  console.log("User Image:", userImage);
+  console.log("User Info:", userInfo);
 
 
   return (
@@ -177,7 +180,7 @@ function App() {
               path="/MyDashboard"
               element={
                 <ProtectedRoute routeName="MyDashboard">
-                  <MyDashboard userImage={userImage} />
+                  <MyDashboard userImage={userImage} userInfo={userInfo} />
                 </ProtectedRoute>
               }
             />

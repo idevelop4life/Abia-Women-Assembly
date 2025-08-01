@@ -5,16 +5,20 @@ import Kite from "../../assets/kiteimage.png";
 import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import VerifyModal from "../VerifyModal/VerifyModal";
 
-export default function MyDashboard(userImage) {
+export default function MyDashboard(userImage, userInfo) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [verifiedOpen, setVerifiedOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Option 1");
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const options = ["Option 1", "Option 2", "Option 3"];
-  console.log("userImage", userImage);
+
+   console.log("In MyDashboard - userInfo:", userInfo);
+  console.log("In MyDashboard - userImage:", userImage);
 
   // Define event dates here (adjust as needed)
   const eventDates = [
@@ -48,14 +52,19 @@ export default function MyDashboard(userImage) {
         <div className="flex flex-row items-start border px-6 py-0">
           <div className="my-10 p-3">
             <p>Membership Details</p>
-            <p>Grace Iheme</p>
-            <p>grace.iheme@gmail.com</p>
+            <p>{userImage.userInfo.first_name} {userImage.userInfo.last_name}</p>
+            <p>{userImage.userInfo.email}</p>
             <p>Status</p>
-            <p>Verified Member</p>
+            {userImage.userInfo.is_verified ? (
+              <p>Verified Member</p>
+            ) : (
+              <p>Not Verified</p>
+            )}
+
             <p>ID Number</p>
             <p>AWA-MN0178</p>
           </div>
-
+          <div className="my-10 p-3">
           <div className="border flex justify-start flex-col py-3 px-3 my-3">
             <div className="flex justify-center">
               <img src={AWA1} alt="AWA" className="w-16 h-16" />
@@ -69,7 +78,21 @@ export default function MyDashboard(userImage) {
                 className="w-16 h-16 p-1"
               />
             </div>
+
+            
           </div>
+          {!userImage.userInfo.is_verified && (
+            <button className="bg-green-600 text-white px-4 py-2 rounded"
+            onClick={() => setVerifiedOpen(true)}>
+              Become a verified member
+            </button>
+          )}
+          {verifiedOpen && (
+            <VerifyModal onClose={() => setVerifiedOpen(false)} />
+
+          )}
+          </div>
+          
         </div>
       </div>
 
