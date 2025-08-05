@@ -21,8 +21,13 @@ router.get("/", (req, res) => {
   res.send("Hello World from Auth Route!");
 });
 
-router.post("/register", async (req, res) => {
+function generateMemberID() {
+  const prefix = "AWA-MN";
+  const randomNumber = Math.floor(1000 + Math.random() * 9000); // Generates 4-digit number
+  return `${prefix}${randomNumber}`;
+}
 
+router.post("/register", async (req, res) => {
   try {
     const {
       last_name,
@@ -43,7 +48,7 @@ router.post("/register", async (req, res) => {
       relationship_with_next_of_kin,
       password,
       member_type = "member",
-      profile_picture, // optional
+      profile_picture,
     } = req.body;
 
     // Validate required fields
@@ -66,33 +71,61 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
+    // Check for existing email or phone
+    const existing = await pool.query(
+      "SELECT 1 FROM members WHERE email = $1 OR primary_phone = $2",
+      [email, primary_phone]
+    );
+    if (existing.rowCount > 0) {
+      return res.status(400).json({ error: "Email or phone number already in use" });
+    }
 
     // Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Use provided profile picture or fallback to default avatar
+    // Handle profile picture
     let finalProfilePicture = profile_picture;
-
     if (!finalProfilePicture) {
       const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
       finalProfilePicture = `https://res.cloudinary.com/${cloudName}/image/upload/default_avatar.png`;
     }
 
-    // Insert new member into DB
+    // Generate and ensure unique id_number
+    function generateMemberID() {
+      const prefix = "AWA-MN";
+      const randomNumber = Math.floor(1000 + Math.random() * 9000);
+      return `${prefix}${randomNumber}`;
+    }
+
+    let id_number = generateMemberID();
+    let exists = true;
+    while (exists) {
+      const check = await pool.query("SELECT id_number FROM members WHERE id_number = $1", [id_number]);
+      if (check.rowCount === 0) {
+        exists = false;
+      } else {
+        id_number = generateMemberID();
+      }
+    }
+
+    // Insert new member
     const query = `
       INSERT INTO members (
-        id, last_name, first_name, nationality, state_city, local_government,
+        id, id_number, last_name, first_name, nationality, state_city, local_government,
         gender, primary_phone, email, additional_contact_info, marital_status,
         date_of_birth, occupation, next_of_kin_name, next_of_kin_phone,
         next_of_kin_occupation, relationship_with_next_of_kin, password, member_type,
         profile_picture
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
-      RETURNING id, first_name, last_name, email, member_type, created_at
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21
+      )
+      RETURNING id, first_name, last_name, email, member_type, created_at, id_number
     `;
 
     const values = [
       uuidv4(),
+      id_number,
       last_name,
       first_name,
       nationality,
@@ -116,6 +149,7 @@ router.post("/register", async (req, res) => {
 
     const result = await pool.query(query, values);
     const newMember = result.rows[0];
+
     const token = jwtGenerator(newMember);
 
     res.json({ token });
@@ -133,7 +167,6 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
