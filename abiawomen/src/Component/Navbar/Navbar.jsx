@@ -66,7 +66,11 @@ export default function Navbar({ userImage, isAuthenticated }) {
                 <Link to="/About">About</Link>
               </a>
             </li>
-            <EventDropDown isAuthenticated={isAuthenticated} />
+            {!isAuthenticated && (
+              <EventDropDown isAuthenticated={isAuthenticated} />
+
+            )}
+            
             <li>
               <a
                 href="#"
@@ -79,7 +83,7 @@ export default function Navbar({ userImage, isAuthenticated }) {
         </div>
 
         <div className="flex items-center space-x-4 mr-4">
-          {!isSignedIn && (
+          {!isAuthenticated && (
             <button className="bg-[#FBD33D] text-black px-4 py-2 rounded hover:bg-blue-600 transition-colors">
               <Link to="/Register">Sign In</Link>
             </button>

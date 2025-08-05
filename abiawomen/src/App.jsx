@@ -68,6 +68,7 @@ function App() {
       }
       
       const isVerified = parseRes.verified === true;
+      console.log("verified",isVerified)
       
       setIsAuthenticated(isVerified);
       setIsLoading(false);

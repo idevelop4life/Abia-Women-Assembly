@@ -89,6 +89,9 @@ export const MakeDonation = () => {
 
       <button
         onClick={handleDonate}
+        disabled={
+          !currency || (currency !== "ngn" && (!amount || parseFloat(amount) <= 0))
+        }
         className="w-full bg-yellow-400 text-black font-semibold py-2 rounded hover:bg-yellow-500 transition-colors"
       >
         Donate Now
