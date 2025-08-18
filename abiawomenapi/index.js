@@ -7,6 +7,7 @@ const pool = require("./db.js"); // Add database connection
 const bcrypt = require("bcrypt"); // Add bcrypt for password hashing
 const { v4: uuidv4 } = require("uuid"); // Add uuid for generating IDs
 
+
 app.use(express.json());
 app.use(cors());
 // app.use("/auth", require("./routes/jwtAuth.js"))
@@ -19,6 +20,8 @@ app.use("/auth", require("./routes/jwtAuth.js"));
 app.use("/members", require("./routes/member.js"));
 app.use("/events", require("./routes/events.js"));
 app.use("/donations", require("./routes/donations.js"));
+app.use("/paypal", require("./routes/paypal.js"));
 
 app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
