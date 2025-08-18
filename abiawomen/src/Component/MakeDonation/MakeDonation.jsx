@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Paypal from "../Paypal/Paypal";
 
 export const MakeDonation = () => {
   const navigate = useNavigate();
@@ -9,10 +10,11 @@ export const MakeDonation = () => {
   const handleDonate = () => {
     if (currency === "ngn") {
       alert("Please transfer to account number: 1234567890 (Access Bank)");
+      navigate("/PaymentPage", { state: { amount: amount, currency: currency } });
     } else {
       alert(`Donating ${amount} via ${currency}`);
     }
-    navigate("/PaymentPage", { state: { amount: amount, currency: currency } });
+    
   };
 
   return (
@@ -57,6 +59,14 @@ export const MakeDonation = () => {
               className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
+      {currency === "paypal" && (
+        <Paypal
+          amount={amount}
+          currency={currency}
+          onSuccess={() => alert("Donation successful!")}
+          onError={() => alert("Error processing donation. Please try again.")}
+        />
+      )}
           {/* 
           <div>
             <label htmlFor="method" className="block text-gray-700 mb-2 font-semibold">
