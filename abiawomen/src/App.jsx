@@ -185,14 +185,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
+            {/* <Route
               path="/UpdateProfile"
               element={
                 <ProtectedRoute routeName="UpdateProfile">
                   <UpdateProfile userImage={userImage} userInfo={userInfo} />
                 </ProtectedRoute>
               }
-            />
+            /> */}
 
             <Route
               path="/BenefitPrograms"

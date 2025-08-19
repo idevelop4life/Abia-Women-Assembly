@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function UpdateProfile({ userImage, userInfo }) {
+export default function UpdateProfile({ userImage, userInfo, onClose }) {
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -100,6 +100,9 @@ export default function UpdateProfile({ userImage, userInfo }) {
       const result = await response.json();
       console.log("Updated successfully:", result);
       alert("Profile updated successfully!");
+
+      // ✅ Close modal only if update was successful
+      onClose();
     } catch (error) {
       console.error("Update error:", error);
       alert("Failed to update profile.");
@@ -214,7 +217,10 @@ export default function UpdateProfile({ userImage, userInfo }) {
         </div>
 
         <div className="my-5 flex justify-between">
-          <button className="border p-4 mx-3 bg-red-900 text-white rounded-lg">
+          <button
+            className="border p-4 mx-3 bg-red-900 text-white rounded-lg"
+            onClick={onClose} // ✅ close modal on cancel
+          >
             CANCEL
           </button>
           <button
