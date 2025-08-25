@@ -59,7 +59,7 @@ export default function MyDashboard({ userImage, userInfo }) {
             {userInfo.is_verified ? (
               <p>Verified Member</p>
             ) : (
-              <p>Not Verified</p>
+              <p className="text-red-700">Not Verified</p>
             )}
 
             <p>ID Number</p>
