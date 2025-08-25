@@ -4,6 +4,8 @@ const router = express.Router();
 const db = require("../db");
 const cloudinary = require("../config/cloudinary"); // Adjust path as needed
 
+
+
 router.post("/:memberId/complete-profile", async (req, res) => {
   const { memberId } = req.params;
   const profileData = req.body;
