@@ -3,7 +3,6 @@ const router = express.Router();
 const pool = require("../db");
 const { v4: uuidv4 } = require("uuid");
 
-// Get all events
 router.get("/", async (req, res) => {
   try {
     const result = await pool.query(
@@ -39,7 +38,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Create an event
 router.post("/", async (req, res) => {
   const {
     name,
@@ -78,7 +76,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update an event
 router.put("/events/:id", async (req, res) => {
   const {
     name,
@@ -123,7 +120,6 @@ router.put("/events/:id", async (req, res) => {
   }
 });
 
-// Delete an event
 router.delete("/events/:id", async (req, res) => {
   try {
     const result = await pool.query(

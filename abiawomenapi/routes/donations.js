@@ -2,10 +2,8 @@
 const router = require("express").Router();
 const pool = require("../db.js");
 const authorization = require("../middleware/authorization.js");
-const upload = require("../utils/s3.js"); // ✅ Fixed path
-const AWS = require('aws-sdk'); // ✅ Added AWS import
-
-// POST /donations - Create with receipt
+const upload = require("../utils/s3.js");
+const AWS = require('aws-sdk'); 
 router.post("/", authorization, upload.single("receipt"), async (req, res) => {
   try {
     const { category, donation_date, amount_donated } = req.body;
@@ -44,7 +42,7 @@ router.get("/:id/receipt-url", authorization, async (req, res) => {
       return res.status(404).json({ error: "Receipt not found" });
     }
 
-    const s3 = new AWS.S3(); // ✅ Fixed: was aws.S3()
+    const s3 = new AWS.S3(); 
     const url = s3.getSignedUrl('getObject', {
       Bucket: process.env.S3_BUCKET,
       Key: donation.receipt_s3_key,
@@ -58,7 +56,7 @@ router.get("/:id/receipt-url", authorization, async (req, res) => {
   }
 });
 
-// GET /me - My donations
+
 router.get("/me", authorization, async (req, res) => {
   try {
     const result = await pool.query(
@@ -72,7 +70,6 @@ router.get("/me", authorization, async (req, res) => {
   }
 });
 
-// PUT /:id - Update donation + receipt
 router.put("/:id", authorization, upload.single("receipt"), async (req, res) => {
   try {
     const { id } = req.params;
@@ -106,7 +103,6 @@ router.put("/:id", authorization, upload.single("receipt"), async (req, res) => 
   }
 });
 
-// DELETE /:id - Secure delete
 router.delete("/:id", authorization, async (req, res) => {
   try {
     const { id } = req.params;
