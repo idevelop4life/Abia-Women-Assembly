@@ -3,8 +3,7 @@ const PORT = process.env.PORT || 9000;
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require("./db.js"); // Add database connection
-const bcrypt = require("bcrypt"); // Add bcrypt for password hashing
+
 const { v4: uuidv4 } = require("uuid"); // Add uuid for generating IDs
 
 
@@ -21,6 +20,7 @@ app.use("/members", require("./routes/member.js"));
 app.use("/events", require("./routes/events.js"));
 app.use("/donations", require("./routes/donations.js"));
 app.use("/paypal", require("./routes/paypal.js"));
+app.use("/benefit_program", require("./routes/benefitprogram.js"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

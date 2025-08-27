@@ -3,7 +3,7 @@ const pool = require("../db.js");
 const { v4: uuidv4 } = require("uuid");
 const authorization = require("../middleware/authorization.js");
 
-router.get("/categories", async (req, res) => {
+router.get("/categories", authorization, async (req, res) => {
   try {
     const result = await pool.query(
       "SELECT * FROM categories ORDER BY created_at DESC",
