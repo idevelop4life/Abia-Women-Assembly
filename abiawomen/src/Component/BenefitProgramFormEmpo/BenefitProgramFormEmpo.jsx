@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { UploadCloud } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function BenefitApplicationForm() {
+export default function BenefitProgramFormEmpo() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -130,7 +130,6 @@ export default function BenefitApplicationForm() {
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-6 text-center">Benefit Application Form</h2>
 
-      {/* First Name */}
       <div className="mb-4">
         <label className="block font-medium mb-1">First Name</label>
         <input
@@ -143,7 +142,6 @@ export default function BenefitApplicationForm() {
         />
       </div>
 
-      {/* Last Name */}
       <div className="mb-4">
         <label className="block font-medium mb-1">Last Name</label>
         <input
@@ -156,7 +154,6 @@ export default function BenefitApplicationForm() {
         />
       </div>
 
-      {/* Proof of Identity Type */}
       <div className="mb-4">
         <label className="block font-medium mb-1">Proof of Identity</label>
         <select
@@ -173,7 +170,6 @@ export default function BenefitApplicationForm() {
         </select>
       </div>
 
-      {/* Upload Proof of Identity */}
       <div className="mb-4">
         <label className="block font-medium mb-1">Upload Proof of Identity</label>
         <UploadBox
@@ -207,9 +203,27 @@ export default function BenefitApplicationForm() {
           </div>
         )}
       </div>
-
-      {/* Upload Proof of Residence */}
       <div className="mb-4">
+        <label className="block font-medium mb-1">Area of Interest/Skill Focus</label>
+        <select
+          name="AreaofInterest"
+          value={formData.identityType}
+          onChange={handleInputChange}
+          className="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        >
+          <option value="">Select</option>
+          <option value="Soap">Soap & Detergent Production</option>
+          <option value="Disinfectant">Disinfectant & Bleach Production</option>
+          <option value="Perfume">Perfume & Oil Perfume Production</option>
+          <option value="Tailoring">Tailoring & Basic Sewing</option>
+        </select>
+
+      </div>
+
+
+
+      {/* <div className="mb-4">
         <label className="block font-medium mb-1">Upload Proof of Residence</label>
         <UploadBox
           onClick={() => residenceFileRef.current?.click()}
@@ -243,7 +257,6 @@ export default function BenefitApplicationForm() {
         )}
       </div>
 
-      {/* Select Benefit */}
       <div className="mb-4">
         <label className="block font-medium mb-1">Select Benefit</label>
         <select
@@ -260,7 +273,6 @@ export default function BenefitApplicationForm() {
         </select>
       </div>
 
-      {/* Willingness to Participate */}
       <div className="flex items-center mb-4">
         <input
           type="checkbox"
@@ -273,7 +285,6 @@ export default function BenefitApplicationForm() {
         <label htmlFor="willingness">Willing to Participate</label>
       </div>
 
-      {/* Guardian Consent */}
       <div className="mb-4">
         <label className="block font-medium mb-1">Guardian Consent (if under 18)</label>
         <UploadBox
@@ -308,7 +319,7 @@ export default function BenefitApplicationForm() {
         )}
       </div>
 
-      {/* Application Form Complete */}
+
       <div className="flex items-center mb-6">
         <input
           type="checkbox"
@@ -322,7 +333,7 @@ export default function BenefitApplicationForm() {
         <label htmlFor="applicationComplete">Application form complete</label>
       </div>
 
-      {/* Submit Button */}
+      Submit Button
       <button
         type="submit"
         disabled={isSubmitting}
@@ -331,7 +342,7 @@ export default function BenefitApplicationForm() {
         }`}
       >
         {isSubmitting ? "Submitting..." : "Submit Application"}
-      </button>
+      </button> */}
     </form>
   );
 }

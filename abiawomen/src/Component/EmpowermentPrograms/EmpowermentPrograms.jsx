@@ -40,7 +40,7 @@ export default function EmpowermentPrograms() {
             </div>
           </div>
           <div>
-            <button className="border p-2 m-3 bg-[#E5AB19] text-white rounded-lg">
+            <button className="border p-2 m-3 bg-[#E5AB19] text-white rounded-lg" onClick={() => navigate('/empowerment-program-app')}>
               Apply
             </button>
           </div>
@@ -54,7 +54,7 @@ export default function EmpowermentPrograms() {
             </div>
           </div>
           <div>
-            <button className="border p-2 m-3 bg-[#E5AB19] text-white rounded-lg">
+            <button className="border p-2 m-3 bg-[#E5AB19] text-white rounded-lg" onClick={() => navigate('/empowerment-program-app')}>
               Apply
             </button>
           </div>
