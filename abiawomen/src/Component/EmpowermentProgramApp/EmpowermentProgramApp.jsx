@@ -1,6 +1,5 @@
-import React from "react";
 import { AlertTriangle } from "lucide-react";
-import BenefitProgramFormEmpo from "../BenefitProgramFormEmpo/BenefitProgramFormEmpo";
+import EmpowermentOpportunityForm from "../EmpowermentOpportunityForm/EmpowermentOpportunityForm";
 
 export const EmpowermentProgramApp = () => {
   return (
@@ -30,7 +29,8 @@ export const EmpowermentProgramApp = () => {
         </p>
 
       </div>
-      <BenefitProgramFormEmpo />
+
+      <EmpowermentOpportunityForm />
     </div>
   );
 };

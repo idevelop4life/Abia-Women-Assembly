@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { UploadCloud } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function BenefitProgramFormEmpo() {
+export default function EmpowermentOpportunityForm() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -10,7 +10,7 @@ export default function BenefitProgramFormEmpo() {
     identityType: "",
     benefitType: "",
     willingness: "no",
-    applicationComplete: "no", // default value
+    applicationComplete: "no", 
     previousExperience: "",
     goals: "",
     availability: "",
@@ -20,7 +20,6 @@ export default function BenefitProgramFormEmpo() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Track file names for display
   const [identityFileName, setIdentityFileName] = useState("");
   const [residenceFileName, setResidenceFileName] = useState("");
   const [guardianFileName, setGuardianFileName] = useState("");
@@ -58,7 +57,6 @@ export default function BenefitProgramFormEmpo() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Optional: Manual validation for required radios
     if (formData.applicationComplete !== "yes" && formData.applicationComplete !== "no") {
       alert("❌ Please confirm whether the application is complete.");
       setIsSubmitting(false);
@@ -94,7 +92,7 @@ export default function BenefitProgramFormEmpo() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:9000/benefit_program", {
+      const response = await fetch("http://localhost:9000/empowerment_opportunity", {
         method: "POST",
         body: formDataToSend,
         headers: {
@@ -265,7 +263,6 @@ export default function BenefitProgramFormEmpo() {
         />
       </div>
 
-      {/* Goals / What do you hope to gain */}
       <div className="mb-4">
         <label className="block font-medium mb-1">
           What do you hope to gain from this program?
