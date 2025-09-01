@@ -21,6 +21,7 @@ app.use("/events", require("./routes/events.js"));
 app.use("/donations", require("./routes/donations.js"));
 app.use("/paypal", require("./routes/paypal.js"));
 app.use("/benefit_program", require("./routes/benefitprogram.js"));
+app.use("/empowerment_opportunity", require("./routes/empowermentopportunity.js"))
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

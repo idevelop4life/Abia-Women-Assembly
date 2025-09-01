@@ -1,28 +1,24 @@
 const router = require("express").Router();
 const pool = require("../db.js");
 const authorization = require("../middleware/authorization.js");
-const upload = require("../utils/s3.js"); // Multer + S3 middleware
+const upload = require("../utils/s3.js"); 
 const AWS = require("aws-sdk");
 
-// Helper: Generate pre-signed URL for S3 object
 const getSignedUrl = (key) => {
   const s3 = new AWS.S3();
   return s3.getSignedUrl("getObject", {
     Bucket: process.env.S3_BUCKET,
     Key: key,
-    Expires: 3600, // 1 hour
+    Expires: 3600, 
   });
 };
 
-// Configure multer for allowed document uploads
 const uploadFields = upload.fields([
   { name: "proof_of_identity", maxCount: 1 },
   { name: "proof_of_residence", maxCount: 1 },
   { name: "guardian_consent", maxCount: 1 },
 ]);
 
-// POST: Submit new benefit application
-// Client does NOT send member_id — taken from JWT
 router.post("/", authorization, uploadFields, async (req, res) => {
   try {
     const {
@@ -37,12 +33,10 @@ router.post("/", authorization, uploadFields, async (req, res) => {
     const memberId = req.user.id;
 
 
-    // Validate required fields
     if (!first_name || !last_name || !selected_benefit || !willingness_to_participate || !application_form_submitted) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Get S3 keys from uploaded files (or null if not provided)
     const proof_of_identity = req.files?.proof_of_identity?.[0]?.key || null;
     const proof_of_residence = req.files?.proof_of_residence?.[0]?.key || null;
     const guardian_consent = req.files?.guardian_consent?.[0]?.key || null;
@@ -80,7 +74,6 @@ router.post("/", authorization, uploadFields, async (req, res) => {
   }
 });
 
-// GET: Get all applications for the logged-in user
 router.get("/me", authorization, async (req, res) => {
   try {
     const result = await pool.query(
@@ -101,7 +94,6 @@ router.get("/me", authorization, async (req, res) => {
   }
 });
 
-// GET: Get a single application (user-owned)
 router.get("/:id", authorization, async (req, res) => {
   const { id } = req.params;
   try {
@@ -121,8 +113,7 @@ router.get("/:id", authorization, async (req, res) => {
   }
 });
 
-// GET: Generate signed URL for a specific document
-// Example: GET /benefitprograms/abc123/document/proof_of_identity
+
 router.get("/:id/document/:field", authorization, async (req, res) => {
   const { id, field } = req.params;
 
@@ -165,7 +156,6 @@ router.get("/:id/document/:field", authorization, async (req, res) => {
   }
 });
 
-// PUT: Update an existing application
 router.put("/:id", authorization, uploadFields, async (req, res) => {
   const { id } = req.params;
   const {
