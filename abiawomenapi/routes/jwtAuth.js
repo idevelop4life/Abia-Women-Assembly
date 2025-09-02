@@ -167,6 +167,8 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -443,5 +445,6 @@ router.patch(
     }
   },
 );
+
 
 module.exports = router;

@@ -10,7 +10,6 @@ const uploadFields = upload.fields([
 
 router.post("/", authorization, uploadFields, async (req, res) => {
   try {
-    console.log(req.body)
     const {
       first_name,
       last_name,
@@ -79,8 +78,6 @@ router.post("/", authorization, uploadFields, async (req, res) => {
 
 router.get("/me", authorization, async (req, res) => {
   try {
-    console.log(req.user);
-
     const result = await pool.query(
       `SELECT 
         id, 
