@@ -110,7 +110,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        <Navbar userImage={userImage} isAuthenticated={isAuthenticated} />
+        <Navbar userImage={userImage} isAuthenticated={isAuthenticated} userInfo={userInfo} />
 
         <main className="flex-grow">
           <Routes>

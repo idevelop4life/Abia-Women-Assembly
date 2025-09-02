@@ -103,27 +103,30 @@ export default function MyDashboard({ userImage, userInfo }) {
             Update Profile
           </button>
 
-          {/* Custom Tailwind Modal */}
           {show && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white rounded-xl shadow-lg w-full h-full max-w-4xl md:h-auto md:max-h-[90vh] overflow-y-auto p-6 relative">
-                {/* Close Button */}
-                <button
-                  className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-                  onClick={() => setShow(false)}
-                >
-                  ✕
-                </button>
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    {/* Full-screen container */}
+    <div className="w-full h-full bg-white flex flex-col relative overflow-hidden">
+      {/* Close Button */}
+      <button
+        className="absolute top-4 right-4 z-10 text-white bg-black bg-opacity-30 hover:bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center transition"
+        onClick={() => setShow(false)}
+        aria-label="Close modal"
+      >
+        ✕
+      </button>
 
-                {/* Modal Content */}
-                <UpdateProfile
-                  userImage={userImage}
-                  userInfo={userInfo}
-                  onClose={() => setShow(false)}
-                />
-              </div>
-            </div>
-          )}
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 bg-gray-50">
+        <UpdateProfile
+          userImage={userImage}
+          userInfo={userInfo}
+          onClose={() => setShow(false)}
+        />
+      </div>
+    </div>
+  </div>
+)}
 
           <button
             className="w-full py-4 bg-green-600 my-2 rounded-md text-white"

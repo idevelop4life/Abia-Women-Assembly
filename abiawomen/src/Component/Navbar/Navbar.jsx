@@ -4,12 +4,12 @@ import UserDropdown from "../UserDropdown/UserDropdown";
 import { Link } from "react-router-dom";
 import EventDropDown from "../EventDropDown/EventDropDown";
 
-function SignedInFeature({ isSignedIn = false, onLogout, userImage }) {
+function SignedInFeature({ isSignedIn = false, onLogout, userImage, userInfo }) {
   if (!isSignedIn) return null; // renders nothing
 
-  return <UserDropdown onLogout={onLogout} userImage={userImage} />;
+  return <UserDropdown onLogout={onLogout} userImage={userImage} userInfo={userInfo}/>;
 }
-export default function Navbar({ userImage, isAuthenticated }) {
+export default function Navbar({ userImage, isAuthenticated, userInfo }) {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
 
   useEffect(() => {
@@ -74,6 +74,7 @@ export default function Navbar({ userImage, isAuthenticated }) {
             isSignedIn={isAuthenticated}
             onLogout={handleLogout}
             userImage={userImage}
+            userInfo={userInfo}
           />
         </div>
       </nav>
