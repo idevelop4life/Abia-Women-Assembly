@@ -32,7 +32,7 @@ export default function MyDonation() {
     const fetchDonations = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:9000/donations/me", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/donations/me`, {
           headers: {
             "Content-Type": "application/json",
             token: token,

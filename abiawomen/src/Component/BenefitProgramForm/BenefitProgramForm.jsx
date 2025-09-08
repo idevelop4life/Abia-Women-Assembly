@@ -74,7 +74,7 @@ export default function BenefitApplicationForm() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:9000/benefit_program", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/benefit_program`, {
         method: "POST",
         body: formDataToSend,
         headers: {

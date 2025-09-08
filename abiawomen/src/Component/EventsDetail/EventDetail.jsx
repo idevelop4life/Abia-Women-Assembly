@@ -10,7 +10,7 @@ export const EventDetail = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await fetch(`http://localhost:9000/events/${id}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/events/${id}`);
         const data = await res.json();
         console.log(data);
         setEvent(data);

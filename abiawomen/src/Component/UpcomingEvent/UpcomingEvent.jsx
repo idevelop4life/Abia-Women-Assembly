@@ -8,7 +8,7 @@ export default function UpcomingEvent() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:9000/events", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/events`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

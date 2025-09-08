@@ -43,7 +43,7 @@ export const PaymentPage = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:9000/donations", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/donations`, {
         method: "POST",
         body: formData,
         headers: {

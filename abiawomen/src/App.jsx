@@ -44,7 +44,7 @@ function App() {
         return;
       }
 
-      const res = await fetch("http://localhost:9000/auth/verify", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/verify`, {
         method: "GET",
         headers: { 
           "Content-Type": "application/json",

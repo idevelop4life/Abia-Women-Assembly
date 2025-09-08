@@ -16,7 +16,7 @@ export default function UpdateProfile({ userImage, userInfo, onClose }) {
   useEffect(() => {
     async function fetchUserInfo() {
       try {
-        const response = await fetch("http://localhost:9000/auth/edit", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/edit`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function UpdateProfile({ userImage, userInfo, onClose }) {
       if (formData.password) data.append("password", formData.password);
       if (selectedImage) data.append("profile_picture", selectedImage);
 
-      const response = await fetch("http://localhost:9000/auth/edit", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/edit`, {
         method: "PATCH",
         headers: {
           token: localStorage.token,

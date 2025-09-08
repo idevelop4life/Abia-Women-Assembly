@@ -92,7 +92,7 @@ export default function EmpowermentOpportunityForm() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:9000/empowerment_opportunity", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/empowerment_opportunity`, {
         method: "POST",
         body: formDataToSend,
         headers: {

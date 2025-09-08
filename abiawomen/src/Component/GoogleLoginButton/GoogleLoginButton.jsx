@@ -26,7 +26,7 @@ export default function GoogleLoginButton({ onLoginSuccess }) {
       last_name: data.family_name,
     };
 
-    const res = await fetch("http://localhost:9000/auth/google-login", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/google-login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(profile),
