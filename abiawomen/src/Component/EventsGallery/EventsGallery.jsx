@@ -1,12 +1,11 @@
-import React from "react";
-import image1 from "../../assets/about_image_1.png";
-import image2 from "../../assets/about_image_2.png";
-import image3 from "../../assets/about_image_3.png";
-import AWAOutreact from "../../assets/AWA2Outreac.png";
-import image5 from "../../assets/image5.png";
-import image6 from "../../assets/image6.png";
-import image7 from "../../assets/image7.png";
-import image8 from "../../assets/image8.png";
+import image1 from "@/assets/about_image_1.png";
+import image2 from "@/assets/about_image_2.png";
+import image3 from "@/assets/about_image_3.png";
+import AWAOutreact from "@/assets/AWA2Outreac.png";
+import image5 from "@/assets/image5.png";
+import image6 from "@/assets/image6.png";
+import image7 from "@/assets/image7.png";
+import image8 from "@/assets/image8.png";
 
 export default function EventsGallery() {
   return (
