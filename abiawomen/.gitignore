@@ -24,3 +24,12 @@ dist-ssr
 *.sw?
 *.env
 *.pem
+
+# Testing
+jest.config.js
+jest.setup.js
+*.test.js.snap
+*.snap
+setup.js
+*test.js
+babel.config.json
