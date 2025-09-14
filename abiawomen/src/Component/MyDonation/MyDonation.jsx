@@ -49,10 +49,9 @@ export default function MyDonation() {
           return createdYear === currentYear;
         });
 
-        // Sum donations per month
         const totals = new Array(12).fill(0);
         filteredDonations.forEach((donation) => {
-          const month = new Date(donation.donation_date).getMonth(); // Jan = 0
+          const month = new Date(donation.donation_date).getMonth();
           totals[month] += parseFloat(donation.amount_donated);
         });
 
@@ -70,18 +69,7 @@ export default function MyDonation() {
 
   const chartData = {
     labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",
     ],
     datasets: [
       {
@@ -102,6 +90,22 @@ export default function MyDonation() {
     },
   };
 
+  // Skeleton loader for chart and donations
+  const ChartSkeleton = () => (
+    <div className="w-full h-64 bg-gray-300 animate-pulse rounded-lg my-5"></div>
+  );
+
+  const DonationSkeleton = () => (
+    <div className="border-b-2 border-black flex flex-row justify-between my-2 animate-pulse">
+      <div className="h-6 w-24 bg-gray-300 rounded"></div>
+      <div className="h-6 w-32 bg-gray-300 rounded"></div>
+      <div className="flex flex-col">
+        <div className="h-6 w-20 bg-gray-300 rounded mb-1"></div>
+        <div className="h-4 w-16 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="mx-10 my-10">
       <div className="flex flex-row justify-between my-2">
@@ -109,10 +113,8 @@ export default function MyDonation() {
         <p className="font-bold">Back</p>
       </div>
 
-      {/* 📊 Chart */}
-      <div className="my-5">
-        <Bar data={chartData} options={chartOptions} />
-      </div>
+      {/* Chart */}
+      {loading ? <ChartSkeleton /> : <Bar data={chartData} options={chartOptions} />}
 
       <div className="flex flex-row items-center justify-center my-5">
         <select
@@ -135,12 +137,9 @@ export default function MyDonation() {
       <div>
         <div className="border-t-2 border-black"></div>
 
-        {loading && <p>Loading donations...</p>}
+        {loading && Array.from({ length: 5 }).map((_, idx) => <DonationSkeleton key={idx} />)}
         {error && <p className="text-red-600">Error: {error}</p>}
-
-        {!loading && !error && donations.length === 0 && (
-          <p>No donations found.</p>
-        )}
+        {!loading && !error && donations.length === 0 && <p>No donations found.</p>}
 
         {!loading &&
           !error &&
