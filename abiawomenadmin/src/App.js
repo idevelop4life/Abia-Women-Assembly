@@ -1,23 +1,28 @@
-import logo from './logo.svg';
+// src/App.js
 import './App.css';
+import Navbar from './Components/Navbar/Navbar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React w/ Habeebah and Rubaina
-        </a>
-      </header>
+    <div className="flex min-h-screen">
+      {/* Your Navbar is actually a sidebar! */}
+      <Navbar />
+      
+      {/* Main content area */}
+      <div className="ml-64 flex-1 p-6">
+        <header className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-800">
+            Learn React w/ Habeebah and Rubaina
+          </h1>
+        </header>
+        
+        {/* Your page content goes here */}
+        <main>
+          <p className="text-gray-600">
+            Welcome to the Abia Women Assembly Admin Dashboard!
+          </p>
+        </main>
+      </div>
     </div>
   );
 }
